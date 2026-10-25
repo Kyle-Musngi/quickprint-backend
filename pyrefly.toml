@@ -1,0 +1,25 @@
+# Pyrefly Configuration for Univ Quick Print Backend
+preset = "basic"
+
+project-includes = [
+    "**/*.py",
+]
+project-excludes = [
+    "venv/**",
+]
+
+search-path = [
+    ".",
+]
+
+python-interpreter-path = "venv/Scripts/python.exe"
+site-packages-path = [
+    "venv/Lib/site-packages",
+]
+
+[errors]
+missing-import = "ignore"
+missing-attribute = "ignore"
+unsupported-operation = "ignore"
+bad-override = "ignore"
+bad-context-manager = "ignore"

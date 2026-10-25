@@ -1,0 +1,2545 @@
+[
+{
+  "model": "accounts.user",
+  "fields": {
+    "password": "pbkdf2_sha256$870000$IIoOe4r89zi3un3Yb5qCIw$7RBf3JsUejsifgkjZpzxtgHR2rWhU1mGmR5tPhhDkeg=",
+    "last_login": null,
+    "is_superuser": true,
+    "username": "admin",
+    "first_name": "Admin",
+    "last_name": "System",
+    "email": "admin@univquickprint.ph",
+    "is_staff": true,
+    "is_active": true,
+    "date_joined": "2026-10-25T03:47:56.899Z",
+    "role": "admin",
+    "phone_number": "",
+    "student_id": "",
+    "avatar": "",
+    "created_at": "2026-10-25T03:47:56.900Z",
+    "updated_at": "2026-10-25T03:47:57.137Z",
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "accounts.user",
+  "fields": {
+    "password": "pbkdf2_sha256$870000$IdDgasfLkOqXb3K7DgaFdA$GOJcv/4NcOuKJ0UgUIB9XLvlY5GM0wdXP0rn2v9/YSo=",
+    "last_login": null,
+    "is_superuser": false,
+    "username": "student",
+    "first_name": "Juan",
+    "last_name": "Dela Cruz",
+    "email": "student@dlsu.edu.ph",
+    "is_staff": false,
+    "is_active": true,
+    "date_joined": "2026-10-25T03:47:57.141Z",
+    "role": "customer",
+    "phone_number": "09171234567",
+    "student_id": "12048592",
+    "avatar": "",
+    "created_at": "2026-10-25T03:47:57.142Z",
+    "updated_at": "2026-10-25T03:47:57.382Z",
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "accounts.user",
+  "fields": {
+    "password": "pbkdf2_sha256$870000$CP3m9OiY4kBn1mu2oO3yB7$GQjyLWImWkUjOEbpowsRGaaKZhbUeSQoWhjW0C5Y/qk=",
+    "last_login": null,
+    "is_superuser": false,
+    "username": "maria",
+    "first_name": "Maria",
+    "last_name": "Santos",
+    "email": "maria.santos@up.edu.ph",
+    "is_staff": false,
+    "is_active": true,
+    "date_joined": "2026-10-25T03:47:57.385Z",
+    "role": "customer",
+    "phone_number": "09187654321",
+    "student_id": "2021-04921",
+    "avatar": "",
+    "created_at": "2026-10-25T03:47:57.386Z",
+    "updated_at": "2026-10-25T03:47:57.614Z",
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "accounts.user",
+  "fields": {
+    "password": "pbkdf2_sha256$870000$clEXNOlT06uxPWVOIDe0VY$p63H9huq1oaVSg0SCLGiRaKBLROh/o2HSgq1PHNNsLw=",
+    "last_login": null,
+    "is_superuser": false,
+    "username": "owner_taft",
+    "first_name": "Eduardo",
+    "last_name": "Reyes",
+    "email": "owner.taft@quickprint.ph",
+    "is_staff": false,
+    "is_active": true,
+    "date_joined": "2026-10-25T03:47:57.619Z",
+    "role": "shop_owner",
+    "phone_number": "09191112233",
+    "student_id": "",
+    "avatar": "",
+    "created_at": "2026-10-25T03:47:57.619Z",
+    "updated_at": "2026-10-25T05:36:26.621Z",
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "accounts.user",
+  "fields": {
+    "password": "pbkdf2_sha256$870000$NppG8czMa6LE8fL4EZRN76$QzJGZX3ATmnAbOGX4WOhEOKyMy7h+THsjMvQRh0yAzg=",
+    "last_login": null,
+    "is_superuser": false,
+    "username": "owner_katipunan",
+    "first_name": "Grace",
+    "last_name": "Lim",
+    "email": "owner.katipunan@quickprint.ph",
+    "is_staff": false,
+    "is_active": true,
+    "date_joined": "2026-10-25T03:47:57.856Z",
+    "role": "shop_owner",
+    "phone_number": "09192223344",
+    "student_id": "",
+    "avatar": "",
+    "created_at": "2026-10-25T03:47:57.856Z",
+    "updated_at": "2026-10-25T05:36:26.813Z",
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "accounts.user",
+  "fields": {
+    "password": "pbkdf2_sha256$870000$tlzabKNCQi9s3OA9TGf7Zx$YljGbMR35s/RHDSrN089gAN3sCuorg8Lb1VfBZwgwH4=",
+    "last_login": null,
+    "is_superuser": false,
+    "username": "owner_espana",
+    "first_name": "Mateo",
+    "last_name": "Bautista",
+    "email": "owner.espana@quickprint.ph",
+    "is_staff": false,
+    "is_active": true,
+    "date_joined": "2026-10-25T03:47:58.077Z",
+    "role": "shop_owner",
+    "phone_number": "09193334455",
+    "student_id": "",
+    "avatar": "",
+    "created_at": "2026-10-25T03:47:58.077Z",
+    "updated_at": "2026-10-25T05:36:27.006Z",
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "accounts.user",
+  "fields": {
+    "password": "pbkdf2_sha256$870000$nLKer6Um7PFxhFhYtSfNpA$qGQHQm3Qjl9tZ0+39ALqWGJrTtGq9aQRHcfdmPOVuMo=",
+    "last_login": null,
+    "is_superuser": false,
+    "username": "owner_express",
+    "first_name": "Eduardo",
+    "last_name": "Express",
+    "email": "owner.express@quickprint.ph",
+    "is_staff": false,
+    "is_active": true,
+    "date_joined": "2026-10-25T05:26:11.377Z",
+    "role": "shop_owner",
+    "phone_number": "09194445566",
+    "student_id": "",
+    "avatar": "",
+    "created_at": "2026-10-25T05:26:11.377Z",
+    "updated_at": "2026-10-25T05:36:27.197Z",
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "accounts.user",
+  "fields": {
+    "password": "pbkdf2_sha256$870000$OYOOEVsdtUD6jemeDSb4OL$FjZhTxcO/bdQQtW5ZjHwvWSx4NvWMOylebM/jOhHDuU=",
+    "last_login": null,
+    "is_superuser": false,
+    "username": "owner_corner",
+    "first_name": "Carlos",
+    "last_name": "Corner",
+    "email": "owner.corner@quickprint.ph",
+    "is_staff": false,
+    "is_active": true,
+    "date_joined": "2026-10-25T05:26:11.570Z",
+    "role": "shop_owner",
+    "phone_number": "09195556677",
+    "student_id": "",
+    "avatar": "",
+    "created_at": "2026-10-25T05:26:11.570Z",
+    "updated_at": "2026-10-25T05:36:27.386Z",
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "shops.printingshop",
+  "pk": 1,
+  "fields": {
+    "owner": [
+      "owner_taft"
+    ],
+    "name": "Cebu Campus Print Hub",
+    "description": "Fictional demo shop for university document printing, thesis binding, and copying in Cebu City.",
+    "email": "cebu-campus@example.invalid",
+    "phone_number": "032 000 0101",
+    "address": "Fictional demo location near Cebu City campus",
+    "city": "Cebu City",
+    "barangay": "Demo District",
+    "latitude": "10.3157000",
+    "longitude": "123.8854000",
+    "image": "",
+    "status": "approved",
+    "rejection_reason": "",
+    "is_active": true,
+    "opening_time": "07:30:00",
+    "closing_time": "19:30:00",
+    "operating_days": "Monday - Sunday",
+    "pickup_slot_interval_minutes": 30,
+    "slot_capacity": 6,
+    "created_at": "2026-10-25T03:47:58.326Z",
+    "updated_at": "2026-10-25T05:50:27.534Z"
+  }
+},
+{
+  "model": "shops.printingshop",
+  "pk": 2,
+  "fields": {
+    "owner": [
+      "owner_katipunan"
+    ],
+    "name": "Queen City Quick Prints",
+    "description": "Fictional demo shop serving Cebu students with document printing and lamination.",
+    "email": "queen-city@example.invalid",
+    "phone_number": "032 000 0102",
+    "address": "Fictional demo location near Lahug",
+    "city": "Cebu City",
+    "barangay": "Demo District",
+    "latitude": "10.3380000",
+    "longitude": "123.9020000",
+    "image": "",
+    "status": "approved",
+    "rejection_reason": "",
+    "is_active": true,
+    "opening_time": "08:00:00",
+    "closing_time": "20:00:00",
+    "operating_days": "Monday - Saturday",
+    "pickup_slot_interval_minutes": 30,
+    "slot_capacity": 8,
+    "created_at": "2026-10-25T03:47:58.392Z",
+    "updated_at": "2026-10-25T05:36:27.403Z"
+  }
+},
+{
+  "model": "shops.printingshop",
+  "pk": 3,
+  "fields": {
+    "owner": [
+      "owner_espana"
+    ],
+    "name": "Sugbo Student Print Center",
+    "description": "Fictional demo shop for reviewers, thesis printing, and rush student documents in Cebu City.",
+    "email": "sugbo-student@example.invalid",
+    "phone_number": "032 000 0103",
+    "address": "Fictional demo location near Guadalupe",
+    "city": "Cebu City",
+    "barangay": "Demo District",
+    "latitude": "10.3020000",
+    "longitude": "123.8950000",
+    "image": "",
+    "status": "pending",
+    "rejection_reason": "",
+    "is_active": true,
+    "opening_time": "07:00:00",
+    "closing_time": "19:00:00",
+    "operating_days": "Monday - Saturday",
+    "pickup_slot_interval_minutes": 20,
+    "slot_capacity": 5,
+    "created_at": "2026-10-25T03:47:58.461Z",
+    "updated_at": "2026-10-25T05:36:27.412Z"
+  }
+},
+{
+  "model": "shops.printingshop",
+  "pk": 4,
+  "fields": {
+    "owner": [
+      "owner_express"
+    ],
+    "name": "Cebu Document Express",
+    "description": "Fictional demo shop application awaiting approval in Cebu City.",
+    "email": "cebu-document@example.invalid",
+    "phone_number": "032 000 0104",
+    "address": "Fictional demo location near Mandaue boundary",
+    "city": "Cebu City",
+    "barangay": "Demo District",
+    "latitude": "10.3450000",
+    "longitude": "123.9500000",
+    "image": "",
+    "status": "approved",
+    "rejection_reason": "",
+    "is_active": true,
+    "opening_time": "08:00:00",
+    "closing_time": "18:00:00",
+    "operating_days": "Monday - Friday",
+    "pickup_slot_interval_minutes": 30,
+    "slot_capacity": 4,
+    "created_at": "2026-10-25T03:47:58.528Z",
+    "updated_at": "2026-10-25T05:44:13.890Z"
+  }
+},
+{
+  "model": "shops.printingshop",
+  "pk": 5,
+  "fields": {
+    "owner": [
+      "owner_corner"
+    ],
+    "name": "University Print Corner Cebu",
+    "description": "Fictional demo shop temporarily suspended for administrator testing.",
+    "email": "cebu-corner@example.invalid",
+    "phone_number": "032 000 0105",
+    "address": "Fictional demo location near Banilad",
+    "city": "Cebu City",
+    "barangay": "Demo District",
+    "latitude": "10.3550000",
+    "longitude": "123.9100000",
+    "image": "",
+    "status": "suspended",
+    "rejection_reason": "",
+    "is_active": true,
+    "opening_time": "08:30:00",
+    "closing_time": "17:30:00",
+    "operating_days": "Monday - Friday",
+    "pickup_slot_interval_minutes": 30,
+    "slot_capacity": 4,
+    "created_at": "2026-10-25T05:26:11.887Z",
+    "updated_at": "2026-10-25T05:36:27.430Z"
+  }
+},
+{
+  "model": "shops.shopoperatinghours",
+  "pk": 1,
+  "fields": {
+    "shop": 1,
+    "day_of_week": 0,
+    "is_open": true,
+    "opening_time": "07:30:00",
+    "closing_time": "19:30:00"
+  }
+},
+{
+  "model": "shops.shopoperatinghours",
+  "pk": 2,
+  "fields": {
+    "shop": 1,
+    "day_of_week": 1,
+    "is_open": true,
+    "opening_time": "07:30:00",
+    "closing_time": "19:30:00"
+  }
+},
+{
+  "model": "shops.shopoperatinghours",
+  "pk": 3,
+  "fields": {
+    "shop": 1,
+    "day_of_week": 2,
+    "is_open": true,
+    "opening_time": "07:30:00",
+    "closing_time": "19:30:00"
+  }
+},
+{
+  "model": "shops.shopoperatinghours",
+  "pk": 4,
+  "fields": {
+    "shop": 1,
+    "day_of_week": 3,
+    "is_open": true,
+    "opening_time": "07:30:00",
+    "closing_time": "19:30:00"
+  }
+},
+{
+  "model": "shops.shopoperatinghours",
+  "pk": 5,
+  "fields": {
+    "shop": 1,
+    "day_of_week": 4,
+    "is_open": true,
+    "opening_time": "07:30:00",
+    "closing_time": "19:30:00"
+  }
+},
+{
+  "model": "shops.shopoperatinghours",
+  "pk": 6,
+  "fields": {
+    "shop": 1,
+    "day_of_week": 5,
+    "is_open": true,
+    "opening_time": "07:30:00",
+    "closing_time": "19:30:00"
+  }
+},
+{
+  "model": "shops.shopoperatinghours",
+  "pk": 7,
+  "fields": {
+    "shop": 1,
+    "day_of_week": 6,
+    "is_open": true,
+    "opening_time": "07:30:00",
+    "closing_time": "19:30:00"
+  }
+},
+{
+  "model": "shops.shopoperatinghours",
+  "pk": 8,
+  "fields": {
+    "shop": 2,
+    "day_of_week": 0,
+    "is_open": true,
+    "opening_time": "08:00:00",
+    "closing_time": "20:00:00"
+  }
+},
+{
+  "model": "shops.shopoperatinghours",
+  "pk": 9,
+  "fields": {
+    "shop": 2,
+    "day_of_week": 1,
+    "is_open": true,
+    "opening_time": "08:00:00",
+    "closing_time": "20:00:00"
+  }
+},
+{
+  "model": "shops.shopoperatinghours",
+  "pk": 10,
+  "fields": {
+    "shop": 2,
+    "day_of_week": 2,
+    "is_open": true,
+    "opening_time": "08:00:00",
+    "closing_time": "20:00:00"
+  }
+},
+{
+  "model": "shops.shopoperatinghours",
+  "pk": 11,
+  "fields": {
+    "shop": 2,
+    "day_of_week": 3,
+    "is_open": true,
+    "opening_time": "08:00:00",
+    "closing_time": "20:00:00"
+  }
+},
+{
+  "model": "shops.shopoperatinghours",
+  "pk": 12,
+  "fields": {
+    "shop": 2,
+    "day_of_week": 4,
+    "is_open": true,
+    "opening_time": "08:00:00",
+    "closing_time": "20:00:00"
+  }
+},
+{
+  "model": "shops.shopoperatinghours",
+  "pk": 13,
+  "fields": {
+    "shop": 2,
+    "day_of_week": 5,
+    "is_open": true,
+    "opening_time": "08:00:00",
+    "closing_time": "20:00:00"
+  }
+},
+{
+  "model": "shops.shopoperatinghours",
+  "pk": 14,
+  "fields": {
+    "shop": 2,
+    "day_of_week": 6,
+    "is_open": false,
+    "opening_time": "08:00:00",
+    "closing_time": "20:00:00"
+  }
+},
+{
+  "model": "shops.shopoperatinghours",
+  "pk": 15,
+  "fields": {
+    "shop": 3,
+    "day_of_week": 0,
+    "is_open": true,
+    "opening_time": "07:00:00",
+    "closing_time": "19:00:00"
+  }
+},
+{
+  "model": "shops.shopoperatinghours",
+  "pk": 16,
+  "fields": {
+    "shop": 3,
+    "day_of_week": 1,
+    "is_open": true,
+    "opening_time": "07:00:00",
+    "closing_time": "19:00:00"
+  }
+},
+{
+  "model": "shops.shopoperatinghours",
+  "pk": 17,
+  "fields": {
+    "shop": 3,
+    "day_of_week": 2,
+    "is_open": true,
+    "opening_time": "07:00:00",
+    "closing_time": "19:00:00"
+  }
+},
+{
+  "model": "shops.shopoperatinghours",
+  "pk": 18,
+  "fields": {
+    "shop": 3,
+    "day_of_week": 3,
+    "is_open": true,
+    "opening_time": "07:00:00",
+    "closing_time": "19:00:00"
+  }
+},
+{
+  "model": "shops.shopoperatinghours",
+  "pk": 19,
+  "fields": {
+    "shop": 3,
+    "day_of_week": 4,
+    "is_open": true,
+    "opening_time": "07:00:00",
+    "closing_time": "19:00:00"
+  }
+},
+{
+  "model": "shops.shopoperatinghours",
+  "pk": 20,
+  "fields": {
+    "shop": 3,
+    "day_of_week": 5,
+    "is_open": true,
+    "opening_time": "07:00:00",
+    "closing_time": "19:00:00"
+  }
+},
+{
+  "model": "shops.shopoperatinghours",
+  "pk": 21,
+  "fields": {
+    "shop": 3,
+    "day_of_week": 6,
+    "is_open": false,
+    "opening_time": "07:00:00",
+    "closing_time": "19:00:00"
+  }
+},
+{
+  "model": "shops.shopoperatinghours",
+  "pk": 22,
+  "fields": {
+    "shop": 4,
+    "day_of_week": 0,
+    "is_open": true,
+    "opening_time": "08:00:00",
+    "closing_time": "18:00:00"
+  }
+},
+{
+  "model": "shops.shopoperatinghours",
+  "pk": 23,
+  "fields": {
+    "shop": 4,
+    "day_of_week": 1,
+    "is_open": true,
+    "opening_time": "08:00:00",
+    "closing_time": "18:00:00"
+  }
+},
+{
+  "model": "shops.shopoperatinghours",
+  "pk": 24,
+  "fields": {
+    "shop": 4,
+    "day_of_week": 2,
+    "is_open": true,
+    "opening_time": "08:00:00",
+    "closing_time": "18:00:00"
+  }
+},
+{
+  "model": "shops.shopoperatinghours",
+  "pk": 25,
+  "fields": {
+    "shop": 4,
+    "day_of_week": 3,
+    "is_open": true,
+    "opening_time": "08:00:00",
+    "closing_time": "18:00:00"
+  }
+},
+{
+  "model": "shops.shopoperatinghours",
+  "pk": 26,
+  "fields": {
+    "shop": 4,
+    "day_of_week": 4,
+    "is_open": true,
+    "opening_time": "08:00:00",
+    "closing_time": "18:00:00"
+  }
+},
+{
+  "model": "shops.shopoperatinghours",
+  "pk": 27,
+  "fields": {
+    "shop": 4,
+    "day_of_week": 5,
+    "is_open": false,
+    "opening_time": "08:00:00",
+    "closing_time": "18:00:00"
+  }
+},
+{
+  "model": "shops.shopoperatinghours",
+  "pk": 28,
+  "fields": {
+    "shop": 4,
+    "day_of_week": 6,
+    "is_open": false,
+    "opening_time": "08:00:00",
+    "closing_time": "18:00:00"
+  }
+},
+{
+  "model": "shops.shopoperatinghours",
+  "pk": 29,
+  "fields": {
+    "shop": 5,
+    "day_of_week": 0,
+    "is_open": true,
+    "opening_time": "08:30:00",
+    "closing_time": "17:30:00"
+  }
+},
+{
+  "model": "shops.shopoperatinghours",
+  "pk": 30,
+  "fields": {
+    "shop": 5,
+    "day_of_week": 1,
+    "is_open": true,
+    "opening_time": "08:30:00",
+    "closing_time": "17:30:00"
+  }
+},
+{
+  "model": "shops.shopoperatinghours",
+  "pk": 31,
+  "fields": {
+    "shop": 5,
+    "day_of_week": 2,
+    "is_open": true,
+    "opening_time": "08:30:00",
+    "closing_time": "17:30:00"
+  }
+},
+{
+  "model": "shops.shopoperatinghours",
+  "pk": 32,
+  "fields": {
+    "shop": 5,
+    "day_of_week": 3,
+    "is_open": true,
+    "opening_time": "08:30:00",
+    "closing_time": "17:30:00"
+  }
+},
+{
+  "model": "shops.shopoperatinghours",
+  "pk": 33,
+  "fields": {
+    "shop": 5,
+    "day_of_week": 4,
+    "is_open": true,
+    "opening_time": "08:30:00",
+    "closing_time": "17:30:00"
+  }
+},
+{
+  "model": "shops.shopoperatinghours",
+  "pk": 34,
+  "fields": {
+    "shop": 5,
+    "day_of_week": 5,
+    "is_open": false,
+    "opening_time": "08:30:00",
+    "closing_time": "17:30:00"
+  }
+},
+{
+  "model": "shops.shopoperatinghours",
+  "pk": 35,
+  "fields": {
+    "shop": 5,
+    "day_of_week": 6,
+    "is_open": false,
+    "opening_time": "08:30:00",
+    "closing_time": "17:30:00"
+  }
+},
+{
+  "model": "printing.shoppricingrule",
+  "pk": 1,
+  "fields": {
+    "shop": 1,
+    "paper_size": "A4",
+    "color_mode": "bw",
+    "print_side": "single",
+    "price_per_page": "1.50",
+    "is_available": true,
+    "created_at": "2026-10-25T03:47:58.331Z",
+    "updated_at": "2026-10-25T03:47:58.331Z"
+  }
+},
+{
+  "model": "printing.shoppricingrule",
+  "pk": 2,
+  "fields": {
+    "shop": 1,
+    "paper_size": "A4",
+    "color_mode": "bw",
+    "print_side": "double",
+    "price_per_page": "2.50",
+    "is_available": true,
+    "created_at": "2026-10-25T03:47:58.336Z",
+    "updated_at": "2026-10-25T03:47:58.336Z"
+  }
+},
+{
+  "model": "printing.shoppricingrule",
+  "pk": 3,
+  "fields": {
+    "shop": 1,
+    "paper_size": "A4",
+    "color_mode": "color",
+    "print_side": "single",
+    "price_per_page": "5.00",
+    "is_available": true,
+    "created_at": "2026-10-25T03:47:58.339Z",
+    "updated_at": "2026-10-25T03:47:58.339Z"
+  }
+},
+{
+  "model": "printing.shoppricingrule",
+  "pk": 4,
+  "fields": {
+    "shop": 1,
+    "paper_size": "A4",
+    "color_mode": "color",
+    "print_side": "double",
+    "price_per_page": "9.00",
+    "is_available": true,
+    "created_at": "2026-10-25T03:47:58.343Z",
+    "updated_at": "2026-10-25T03:47:58.343Z"
+  }
+},
+{
+  "model": "printing.shoppricingrule",
+  "pk": 5,
+  "fields": {
+    "shop": 1,
+    "paper_size": "Letter",
+    "color_mode": "bw",
+    "print_side": "single",
+    "price_per_page": "1.50",
+    "is_available": true,
+    "created_at": "2026-10-25T03:47:58.347Z",
+    "updated_at": "2026-10-25T03:47:58.347Z"
+  }
+},
+{
+  "model": "printing.shoppricingrule",
+  "pk": 6,
+  "fields": {
+    "shop": 1,
+    "paper_size": "Letter",
+    "color_mode": "bw",
+    "print_side": "double",
+    "price_per_page": "2.50",
+    "is_available": true,
+    "created_at": "2026-10-25T03:47:58.350Z",
+    "updated_at": "2026-10-25T03:47:58.350Z"
+  }
+},
+{
+  "model": "printing.shoppricingrule",
+  "pk": 7,
+  "fields": {
+    "shop": 1,
+    "paper_size": "Letter",
+    "color_mode": "color",
+    "print_side": "single",
+    "price_per_page": "5.00",
+    "is_available": true,
+    "created_at": "2026-10-25T03:47:58.355Z",
+    "updated_at": "2026-10-25T03:47:58.355Z"
+  }
+},
+{
+  "model": "printing.shoppricingrule",
+  "pk": 8,
+  "fields": {
+    "shop": 1,
+    "paper_size": "Letter",
+    "color_mode": "color",
+    "print_side": "double",
+    "price_per_page": "9.00",
+    "is_available": true,
+    "created_at": "2026-10-25T03:47:58.358Z",
+    "updated_at": "2026-10-25T03:47:58.358Z"
+  }
+},
+{
+  "model": "printing.shoppricingrule",
+  "pk": 9,
+  "fields": {
+    "shop": 1,
+    "paper_size": "Legal",
+    "color_mode": "bw",
+    "print_side": "single",
+    "price_per_page": "2.00",
+    "is_available": true,
+    "created_at": "2026-10-25T03:47:58.363Z",
+    "updated_at": "2026-10-25T03:47:58.363Z"
+  }
+},
+{
+  "model": "printing.shoppricingrule",
+  "pk": 10,
+  "fields": {
+    "shop": 1,
+    "paper_size": "Legal",
+    "color_mode": "bw",
+    "print_side": "double",
+    "price_per_page": "3.50",
+    "is_available": true,
+    "created_at": "2026-10-25T03:47:58.367Z",
+    "updated_at": "2026-10-25T03:47:58.367Z"
+  }
+},
+{
+  "model": "printing.shoppricingrule",
+  "pk": 11,
+  "fields": {
+    "shop": 1,
+    "paper_size": "Legal",
+    "color_mode": "color",
+    "print_side": "single",
+    "price_per_page": "6.00",
+    "is_available": true,
+    "created_at": "2026-10-25T03:47:58.371Z",
+    "updated_at": "2026-10-25T03:47:58.371Z"
+  }
+},
+{
+  "model": "printing.shoppricingrule",
+  "pk": 12,
+  "fields": {
+    "shop": 1,
+    "paper_size": "Legal",
+    "color_mode": "color",
+    "print_side": "double",
+    "price_per_page": "11.00",
+    "is_available": true,
+    "created_at": "2026-10-25T03:47:58.375Z",
+    "updated_at": "2026-10-25T03:47:58.375Z"
+  }
+},
+{
+  "model": "printing.shoppricingrule",
+  "pk": 13,
+  "fields": {
+    "shop": 2,
+    "paper_size": "A4",
+    "color_mode": "bw",
+    "print_side": "single",
+    "price_per_page": "1.50",
+    "is_available": true,
+    "created_at": "2026-10-25T03:47:58.397Z",
+    "updated_at": "2026-10-25T03:47:58.397Z"
+  }
+},
+{
+  "model": "printing.shoppricingrule",
+  "pk": 14,
+  "fields": {
+    "shop": 2,
+    "paper_size": "A4",
+    "color_mode": "bw",
+    "print_side": "double",
+    "price_per_page": "2.50",
+    "is_available": true,
+    "created_at": "2026-10-25T03:47:58.401Z",
+    "updated_at": "2026-10-25T03:47:58.401Z"
+  }
+},
+{
+  "model": "printing.shoppricingrule",
+  "pk": 15,
+  "fields": {
+    "shop": 2,
+    "paper_size": "A4",
+    "color_mode": "color",
+    "print_side": "single",
+    "price_per_page": "5.00",
+    "is_available": true,
+    "created_at": "2026-10-25T03:47:58.405Z",
+    "updated_at": "2026-10-25T03:47:58.405Z"
+  }
+},
+{
+  "model": "printing.shoppricingrule",
+  "pk": 16,
+  "fields": {
+    "shop": 2,
+    "paper_size": "A4",
+    "color_mode": "color",
+    "print_side": "double",
+    "price_per_page": "9.00",
+    "is_available": true,
+    "created_at": "2026-10-25T03:47:58.408Z",
+    "updated_at": "2026-10-25T03:47:58.408Z"
+  }
+},
+{
+  "model": "printing.shoppricingrule",
+  "pk": 17,
+  "fields": {
+    "shop": 2,
+    "paper_size": "Letter",
+    "color_mode": "bw",
+    "print_side": "single",
+    "price_per_page": "1.50",
+    "is_available": true,
+    "created_at": "2026-10-25T03:47:58.412Z",
+    "updated_at": "2026-10-25T03:47:58.412Z"
+  }
+},
+{
+  "model": "printing.shoppricingrule",
+  "pk": 18,
+  "fields": {
+    "shop": 2,
+    "paper_size": "Letter",
+    "color_mode": "bw",
+    "print_side": "double",
+    "price_per_page": "2.50",
+    "is_available": true,
+    "created_at": "2026-10-25T03:47:58.418Z",
+    "updated_at": "2026-10-25T03:47:58.418Z"
+  }
+},
+{
+  "model": "printing.shoppricingrule",
+  "pk": 19,
+  "fields": {
+    "shop": 2,
+    "paper_size": "Letter",
+    "color_mode": "color",
+    "print_side": "single",
+    "price_per_page": "5.00",
+    "is_available": true,
+    "created_at": "2026-10-25T03:47:58.425Z",
+    "updated_at": "2026-10-25T03:47:58.425Z"
+  }
+},
+{
+  "model": "printing.shoppricingrule",
+  "pk": 20,
+  "fields": {
+    "shop": 2,
+    "paper_size": "Letter",
+    "color_mode": "color",
+    "print_side": "double",
+    "price_per_page": "9.00",
+    "is_available": true,
+    "created_at": "2026-10-25T03:47:58.431Z",
+    "updated_at": "2026-10-25T03:47:58.431Z"
+  }
+},
+{
+  "model": "printing.shoppricingrule",
+  "pk": 21,
+  "fields": {
+    "shop": 2,
+    "paper_size": "Legal",
+    "color_mode": "bw",
+    "print_side": "single",
+    "price_per_page": "2.00",
+    "is_available": true,
+    "created_at": "2026-10-25T03:47:58.434Z",
+    "updated_at": "2026-10-25T03:47:58.434Z"
+  }
+},
+{
+  "model": "printing.shoppricingrule",
+  "pk": 22,
+  "fields": {
+    "shop": 2,
+    "paper_size": "Legal",
+    "color_mode": "bw",
+    "print_side": "double",
+    "price_per_page": "3.50",
+    "is_available": true,
+    "created_at": "2026-10-25T03:47:58.437Z",
+    "updated_at": "2026-10-25T03:47:58.437Z"
+  }
+},
+{
+  "model": "printing.shoppricingrule",
+  "pk": 23,
+  "fields": {
+    "shop": 2,
+    "paper_size": "Legal",
+    "color_mode": "color",
+    "print_side": "single",
+    "price_per_page": "6.00",
+    "is_available": true,
+    "created_at": "2026-10-25T03:47:58.442Z",
+    "updated_at": "2026-10-25T03:47:58.442Z"
+  }
+},
+{
+  "model": "printing.shoppricingrule",
+  "pk": 24,
+  "fields": {
+    "shop": 2,
+    "paper_size": "Legal",
+    "color_mode": "color",
+    "print_side": "double",
+    "price_per_page": "11.00",
+    "is_available": true,
+    "created_at": "2026-10-25T03:47:58.446Z",
+    "updated_at": "2026-10-25T03:47:58.447Z"
+  }
+},
+{
+  "model": "printing.shoppricingrule",
+  "pk": 25,
+  "fields": {
+    "shop": 3,
+    "paper_size": "A4",
+    "color_mode": "bw",
+    "print_side": "single",
+    "price_per_page": "1.50",
+    "is_available": true,
+    "created_at": "2026-10-25T03:47:58.465Z",
+    "updated_at": "2026-10-25T03:47:58.465Z"
+  }
+},
+{
+  "model": "printing.shoppricingrule",
+  "pk": 26,
+  "fields": {
+    "shop": 3,
+    "paper_size": "A4",
+    "color_mode": "bw",
+    "print_side": "double",
+    "price_per_page": "2.50",
+    "is_available": true,
+    "created_at": "2026-10-25T03:47:58.469Z",
+    "updated_at": "2026-10-25T03:47:58.469Z"
+  }
+},
+{
+  "model": "printing.shoppricingrule",
+  "pk": 27,
+  "fields": {
+    "shop": 3,
+    "paper_size": "A4",
+    "color_mode": "color",
+    "print_side": "single",
+    "price_per_page": "5.00",
+    "is_available": true,
+    "created_at": "2026-10-25T03:47:58.472Z",
+    "updated_at": "2026-10-25T03:47:58.472Z"
+  }
+},
+{
+  "model": "printing.shoppricingrule",
+  "pk": 28,
+  "fields": {
+    "shop": 3,
+    "paper_size": "A4",
+    "color_mode": "color",
+    "print_side": "double",
+    "price_per_page": "9.00",
+    "is_available": true,
+    "created_at": "2026-10-25T03:47:58.476Z",
+    "updated_at": "2026-10-25T03:47:58.476Z"
+  }
+},
+{
+  "model": "printing.shoppricingrule",
+  "pk": 29,
+  "fields": {
+    "shop": 3,
+    "paper_size": "Letter",
+    "color_mode": "bw",
+    "print_side": "single",
+    "price_per_page": "1.50",
+    "is_available": true,
+    "created_at": "2026-10-25T03:47:58.481Z",
+    "updated_at": "2026-10-25T03:47:58.481Z"
+  }
+},
+{
+  "model": "printing.shoppricingrule",
+  "pk": 30,
+  "fields": {
+    "shop": 3,
+    "paper_size": "Letter",
+    "color_mode": "bw",
+    "print_side": "double",
+    "price_per_page": "2.50",
+    "is_available": true,
+    "created_at": "2026-10-25T03:47:58.485Z",
+    "updated_at": "2026-10-25T03:47:58.485Z"
+  }
+},
+{
+  "model": "printing.shoppricingrule",
+  "pk": 31,
+  "fields": {
+    "shop": 3,
+    "paper_size": "Letter",
+    "color_mode": "color",
+    "print_side": "single",
+    "price_per_page": "5.00",
+    "is_available": true,
+    "created_at": "2026-10-25T03:47:58.489Z",
+    "updated_at": "2026-10-25T03:47:58.489Z"
+  }
+},
+{
+  "model": "printing.shoppricingrule",
+  "pk": 32,
+  "fields": {
+    "shop": 3,
+    "paper_size": "Letter",
+    "color_mode": "color",
+    "print_side": "double",
+    "price_per_page": "9.00",
+    "is_available": true,
+    "created_at": "2026-10-25T03:47:58.494Z",
+    "updated_at": "2026-10-25T03:47:58.494Z"
+  }
+},
+{
+  "model": "printing.shoppricingrule",
+  "pk": 33,
+  "fields": {
+    "shop": 3,
+    "paper_size": "Legal",
+    "color_mode": "bw",
+    "print_side": "single",
+    "price_per_page": "2.00",
+    "is_available": true,
+    "created_at": "2026-10-25T03:47:58.498Z",
+    "updated_at": "2026-10-25T03:47:58.498Z"
+  }
+},
+{
+  "model": "printing.shoppricingrule",
+  "pk": 34,
+  "fields": {
+    "shop": 3,
+    "paper_size": "Legal",
+    "color_mode": "bw",
+    "print_side": "double",
+    "price_per_page": "3.50",
+    "is_available": true,
+    "created_at": "2026-10-25T03:47:58.502Z",
+    "updated_at": "2026-10-25T03:47:58.502Z"
+  }
+},
+{
+  "model": "printing.shoppricingrule",
+  "pk": 35,
+  "fields": {
+    "shop": 3,
+    "paper_size": "Legal",
+    "color_mode": "color",
+    "print_side": "single",
+    "price_per_page": "6.00",
+    "is_available": true,
+    "created_at": "2026-10-25T03:47:58.507Z",
+    "updated_at": "2026-10-25T03:47:58.507Z"
+  }
+},
+{
+  "model": "printing.shoppricingrule",
+  "pk": 36,
+  "fields": {
+    "shop": 3,
+    "paper_size": "Legal",
+    "color_mode": "color",
+    "print_side": "double",
+    "price_per_page": "11.00",
+    "is_available": true,
+    "created_at": "2026-10-25T03:47:58.511Z",
+    "updated_at": "2026-10-25T03:47:58.511Z"
+  }
+},
+{
+  "model": "printing.shoppricingrule",
+  "pk": 37,
+  "fields": {
+    "shop": 4,
+    "paper_size": "A4",
+    "color_mode": "bw",
+    "print_side": "single",
+    "price_per_page": "1.50",
+    "is_available": true,
+    "created_at": "2026-10-25T03:47:58.532Z",
+    "updated_at": "2026-10-25T03:47:58.532Z"
+  }
+},
+{
+  "model": "printing.shoppricingrule",
+  "pk": 38,
+  "fields": {
+    "shop": 4,
+    "paper_size": "A4",
+    "color_mode": "bw",
+    "print_side": "double",
+    "price_per_page": "2.50",
+    "is_available": true,
+    "created_at": "2026-10-25T03:47:58.536Z",
+    "updated_at": "2026-10-25T03:47:58.536Z"
+  }
+},
+{
+  "model": "printing.shoppricingrule",
+  "pk": 39,
+  "fields": {
+    "shop": 4,
+    "paper_size": "A4",
+    "color_mode": "color",
+    "print_side": "single",
+    "price_per_page": "5.00",
+    "is_available": true,
+    "created_at": "2026-10-25T03:47:58.540Z",
+    "updated_at": "2026-10-25T03:47:58.540Z"
+  }
+},
+{
+  "model": "printing.shoppricingrule",
+  "pk": 40,
+  "fields": {
+    "shop": 4,
+    "paper_size": "A4",
+    "color_mode": "color",
+    "print_side": "double",
+    "price_per_page": "9.00",
+    "is_available": true,
+    "created_at": "2026-10-25T03:47:58.543Z",
+    "updated_at": "2026-10-25T03:47:58.543Z"
+  }
+},
+{
+  "model": "printing.shoppricingrule",
+  "pk": 41,
+  "fields": {
+    "shop": 4,
+    "paper_size": "Letter",
+    "color_mode": "bw",
+    "print_side": "single",
+    "price_per_page": "1.50",
+    "is_available": true,
+    "created_at": "2026-10-25T03:47:58.547Z",
+    "updated_at": "2026-10-25T03:47:58.547Z"
+  }
+},
+{
+  "model": "printing.shoppricingrule",
+  "pk": 42,
+  "fields": {
+    "shop": 4,
+    "paper_size": "Letter",
+    "color_mode": "bw",
+    "print_side": "double",
+    "price_per_page": "2.50",
+    "is_available": true,
+    "created_at": "2026-10-25T03:47:58.550Z",
+    "updated_at": "2026-10-25T03:47:58.550Z"
+  }
+},
+{
+  "model": "printing.shoppricingrule",
+  "pk": 43,
+  "fields": {
+    "shop": 4,
+    "paper_size": "Letter",
+    "color_mode": "color",
+    "print_side": "single",
+    "price_per_page": "5.00",
+    "is_available": true,
+    "created_at": "2026-10-25T03:47:58.556Z",
+    "updated_at": "2026-10-25T03:47:58.556Z"
+  }
+},
+{
+  "model": "printing.shoppricingrule",
+  "pk": 44,
+  "fields": {
+    "shop": 4,
+    "paper_size": "Letter",
+    "color_mode": "color",
+    "print_side": "double",
+    "price_per_page": "9.00",
+    "is_available": true,
+    "created_at": "2026-10-25T03:47:58.563Z",
+    "updated_at": "2026-10-25T03:47:58.563Z"
+  }
+},
+{
+  "model": "printing.shoppricingrule",
+  "pk": 45,
+  "fields": {
+    "shop": 4,
+    "paper_size": "Legal",
+    "color_mode": "bw",
+    "print_side": "single",
+    "price_per_page": "2.00",
+    "is_available": true,
+    "created_at": "2026-10-25T03:47:58.567Z",
+    "updated_at": "2026-10-25T03:47:58.567Z"
+  }
+},
+{
+  "model": "printing.shoppricingrule",
+  "pk": 46,
+  "fields": {
+    "shop": 4,
+    "paper_size": "Legal",
+    "color_mode": "bw",
+    "print_side": "double",
+    "price_per_page": "3.50",
+    "is_available": true,
+    "created_at": "2026-10-25T03:47:58.571Z",
+    "updated_at": "2026-10-25T03:47:58.571Z"
+  }
+},
+{
+  "model": "printing.shoppricingrule",
+  "pk": 47,
+  "fields": {
+    "shop": 4,
+    "paper_size": "Legal",
+    "color_mode": "color",
+    "print_side": "single",
+    "price_per_page": "6.00",
+    "is_available": true,
+    "created_at": "2026-10-25T03:47:58.576Z",
+    "updated_at": "2026-10-25T03:47:58.576Z"
+  }
+},
+{
+  "model": "printing.shoppricingrule",
+  "pk": 48,
+  "fields": {
+    "shop": 4,
+    "paper_size": "Legal",
+    "color_mode": "color",
+    "print_side": "double",
+    "price_per_page": "11.00",
+    "is_available": true,
+    "created_at": "2026-10-25T03:47:58.580Z",
+    "updated_at": "2026-10-25T03:47:58.580Z"
+  }
+},
+{
+  "model": "printing.shoppricingrule",
+  "pk": 49,
+  "fields": {
+    "shop": 5,
+    "paper_size": "A4",
+    "color_mode": "bw",
+    "print_side": "single",
+    "price_per_page": "1.50",
+    "is_available": true,
+    "created_at": "2026-10-25T05:26:11.890Z",
+    "updated_at": "2026-10-25T05:26:11.890Z"
+  }
+},
+{
+  "model": "printing.shoppricingrule",
+  "pk": 50,
+  "fields": {
+    "shop": 5,
+    "paper_size": "A4",
+    "color_mode": "bw",
+    "print_side": "double",
+    "price_per_page": "2.50",
+    "is_available": true,
+    "created_at": "2026-10-25T05:26:11.893Z",
+    "updated_at": "2026-10-25T05:26:11.894Z"
+  }
+},
+{
+  "model": "printing.shoppricingrule",
+  "pk": 51,
+  "fields": {
+    "shop": 5,
+    "paper_size": "A4",
+    "color_mode": "color",
+    "print_side": "single",
+    "price_per_page": "5.00",
+    "is_available": true,
+    "created_at": "2026-10-25T05:26:11.897Z",
+    "updated_at": "2026-10-25T05:26:11.897Z"
+  }
+},
+{
+  "model": "printing.shoppricingrule",
+  "pk": 52,
+  "fields": {
+    "shop": 5,
+    "paper_size": "A4",
+    "color_mode": "color",
+    "print_side": "double",
+    "price_per_page": "9.00",
+    "is_available": true,
+    "created_at": "2026-10-25T05:26:11.901Z",
+    "updated_at": "2026-10-25T05:26:11.901Z"
+  }
+},
+{
+  "model": "printing.shoppricingrule",
+  "pk": 53,
+  "fields": {
+    "shop": 5,
+    "paper_size": "Letter",
+    "color_mode": "bw",
+    "print_side": "single",
+    "price_per_page": "1.50",
+    "is_available": true,
+    "created_at": "2026-10-25T05:26:11.903Z",
+    "updated_at": "2026-10-25T05:26:11.903Z"
+  }
+},
+{
+  "model": "printing.shoppricingrule",
+  "pk": 54,
+  "fields": {
+    "shop": 5,
+    "paper_size": "Letter",
+    "color_mode": "bw",
+    "print_side": "double",
+    "price_per_page": "2.50",
+    "is_available": true,
+    "created_at": "2026-10-25T05:26:11.906Z",
+    "updated_at": "2026-10-25T05:26:11.906Z"
+  }
+},
+{
+  "model": "printing.shoppricingrule",
+  "pk": 55,
+  "fields": {
+    "shop": 5,
+    "paper_size": "Letter",
+    "color_mode": "color",
+    "print_side": "single",
+    "price_per_page": "5.00",
+    "is_available": true,
+    "created_at": "2026-10-25T05:26:11.909Z",
+    "updated_at": "2026-10-25T05:26:11.909Z"
+  }
+},
+{
+  "model": "printing.shoppricingrule",
+  "pk": 56,
+  "fields": {
+    "shop": 5,
+    "paper_size": "Letter",
+    "color_mode": "color",
+    "print_side": "double",
+    "price_per_page": "9.00",
+    "is_available": true,
+    "created_at": "2026-10-25T05:26:11.912Z",
+    "updated_at": "2026-10-25T05:26:11.912Z"
+  }
+},
+{
+  "model": "printing.shoppricingrule",
+  "pk": 57,
+  "fields": {
+    "shop": 5,
+    "paper_size": "Legal",
+    "color_mode": "bw",
+    "print_side": "single",
+    "price_per_page": "2.00",
+    "is_available": true,
+    "created_at": "2026-10-25T05:26:11.915Z",
+    "updated_at": "2026-10-25T05:26:11.915Z"
+  }
+},
+{
+  "model": "printing.shoppricingrule",
+  "pk": 58,
+  "fields": {
+    "shop": 5,
+    "paper_size": "Legal",
+    "color_mode": "bw",
+    "print_side": "double",
+    "price_per_page": "3.50",
+    "is_available": true,
+    "created_at": "2026-10-25T05:26:11.918Z",
+    "updated_at": "2026-10-25T05:26:11.918Z"
+  }
+},
+{
+  "model": "printing.shoppricingrule",
+  "pk": 59,
+  "fields": {
+    "shop": 5,
+    "paper_size": "Legal",
+    "color_mode": "color",
+    "print_side": "single",
+    "price_per_page": "6.00",
+    "is_available": true,
+    "created_at": "2026-10-25T05:26:11.920Z",
+    "updated_at": "2026-10-25T05:26:11.920Z"
+  }
+},
+{
+  "model": "printing.shoppricingrule",
+  "pk": 60,
+  "fields": {
+    "shop": 5,
+    "paper_size": "Legal",
+    "color_mode": "color",
+    "print_side": "double",
+    "price_per_page": "11.00",
+    "is_available": true,
+    "created_at": "2026-10-25T05:26:11.923Z",
+    "updated_at": "2026-10-25T05:26:11.923Z"
+  }
+},
+{
+  "model": "printing.printingservice",
+  "pk": 1,
+  "fields": {
+    "shop": 1,
+    "name": "Document & PDF Printing",
+    "description": "Crisp laser printing for handouts, research papers, and assignments.",
+    "base_price": "1.50",
+    "is_active": true,
+    "created_at": "2026-10-25T03:47:58.379Z"
+  }
+},
+{
+  "model": "printing.printingservice",
+  "pk": 2,
+  "fields": {
+    "shop": 1,
+    "name": "Hardbound & Ring Binding",
+    "description": "Professional ring binding, thermal tape, and hardbound thesis with gold stamping.",
+    "base_price": "50.00",
+    "is_active": true,
+    "created_at": "2026-10-25T03:47:58.383Z"
+  }
+},
+{
+  "model": "printing.printingservice",
+  "pk": 3,
+  "fields": {
+    "shop": 1,
+    "name": "Document Lamination",
+    "description": "High-clarity plastic lamination for identification cards, menus, and certificates.",
+    "base_price": "25.00",
+    "is_active": true,
+    "created_at": "2026-10-25T03:47:58.387Z"
+  }
+},
+{
+  "model": "printing.printingservice",
+  "pk": 4,
+  "fields": {
+    "shop": 2,
+    "name": "Document & PDF Printing",
+    "description": "Crisp laser printing for handouts, research papers, and assignments.",
+    "base_price": "1.50",
+    "is_active": true,
+    "created_at": "2026-10-25T03:47:58.450Z"
+  }
+},
+{
+  "model": "printing.printingservice",
+  "pk": 5,
+  "fields": {
+    "shop": 2,
+    "name": "Hardbound & Ring Binding",
+    "description": "Professional ring binding, thermal tape, and hardbound thesis with gold stamping.",
+    "base_price": "50.00",
+    "is_active": true,
+    "created_at": "2026-10-25T03:47:58.453Z"
+  }
+},
+{
+  "model": "printing.printingservice",
+  "pk": 6,
+  "fields": {
+    "shop": 2,
+    "name": "Document Lamination",
+    "description": "High-clarity plastic lamination for identification cards, menus, and certificates.",
+    "base_price": "25.00",
+    "is_active": true,
+    "created_at": "2026-10-25T03:47:58.457Z"
+  }
+},
+{
+  "model": "printing.printingservice",
+  "pk": 7,
+  "fields": {
+    "shop": 3,
+    "name": "Document & PDF Printing",
+    "description": "Crisp laser printing for handouts, research papers, and assignments.",
+    "base_price": "1.50",
+    "is_active": true,
+    "created_at": "2026-10-25T03:47:58.515Z"
+  }
+},
+{
+  "model": "printing.printingservice",
+  "pk": 8,
+  "fields": {
+    "shop": 3,
+    "name": "Hardbound & Ring Binding",
+    "description": "Professional ring binding, thermal tape, and hardbound thesis with gold stamping.",
+    "base_price": "50.00",
+    "is_active": true,
+    "created_at": "2026-10-25T03:47:58.520Z"
+  }
+},
+{
+  "model": "printing.printingservice",
+  "pk": 9,
+  "fields": {
+    "shop": 3,
+    "name": "Document Lamination",
+    "description": "High-clarity plastic lamination for identification cards, menus, and certificates.",
+    "base_price": "25.00",
+    "is_active": true,
+    "created_at": "2026-10-25T03:47:58.524Z"
+  }
+},
+{
+  "model": "printing.printingservice",
+  "pk": 10,
+  "fields": {
+    "shop": 4,
+    "name": "Document & PDF Printing",
+    "description": "Crisp laser printing for handouts, research papers, and assignments.",
+    "base_price": "1.50",
+    "is_active": true,
+    "created_at": "2026-10-25T03:47:58.586Z"
+  }
+},
+{
+  "model": "printing.printingservice",
+  "pk": 11,
+  "fields": {
+    "shop": 4,
+    "name": "Hardbound & Ring Binding",
+    "description": "Professional ring binding, thermal tape, and hardbound thesis with gold stamping.",
+    "base_price": "50.00",
+    "is_active": true,
+    "created_at": "2026-10-25T03:47:58.591Z"
+  }
+},
+{
+  "model": "printing.printingservice",
+  "pk": 12,
+  "fields": {
+    "shop": 4,
+    "name": "Document Lamination",
+    "description": "High-clarity plastic lamination for identification cards, menus, and certificates.",
+    "base_price": "25.00",
+    "is_active": true,
+    "created_at": "2026-10-25T03:47:58.595Z"
+  }
+},
+{
+  "model": "printing.printingservice",
+  "pk": 13,
+  "fields": {
+    "shop": 5,
+    "name": "Document & PDF Printing",
+    "description": "Crisp laser printing for handouts, research papers, and assignments.",
+    "base_price": "1.50",
+    "is_active": true,
+    "created_at": "2026-10-25T05:26:11.927Z"
+  }
+},
+{
+  "model": "printing.printingservice",
+  "pk": 14,
+  "fields": {
+    "shop": 5,
+    "name": "Hardbound & Ring Binding",
+    "description": "Professional ring binding, thermal tape, and hardbound thesis with gold stamping.",
+    "base_price": "50.00",
+    "is_active": true,
+    "created_at": "2026-10-25T05:26:11.931Z"
+  }
+},
+{
+  "model": "printing.printingservice",
+  "pk": 15,
+  "fields": {
+    "shop": 5,
+    "name": "Document Lamination",
+    "description": "High-clarity plastic lamination for identification cards, menus, and certificates.",
+    "base_price": "25.00",
+    "is_active": true,
+    "created_at": "2026-10-25T05:26:11.934Z"
+  }
+},
+{
+  "model": "orders.globalpickupsequence",
+  "pk": 1,
+  "fields": {
+    "last_number": 2,
+    "updated_at": "2026-10-25T03:47:58.651Z"
+  }
+},
+{
+  "model": "orders.printingorder",
+  "pk": 1,
+  "fields": {
+    "order_number": "UQP-DEMO-001",
+    "customer": [
+      "student"
+    ],
+    "shop": 1,
+    "status": "ready_for_pickup",
+    "payment_status": "paid",
+    "payment_deadline": null,
+    "rejection_reason": "",
+    "cancellation_reason": "",
+    "subtotal_amount": "45.00",
+    "service_fee": "0.00",
+    "total_amount": "45.00",
+    "instructions": "Please staple top-left corner. Needs clean margins.",
+    "pickup_date": "2026-10-26",
+    "pickup_time_slot": "10:00 AM - 10:30 AM",
+    "pickup_code": "UQP01",
+    "pickup_confirmed_at": null,
+    "pickup_confirmed_by": null,
+    "created_at": "2026-10-25T03:47:58.600Z",
+    "updated_at": "2026-10-25T03:47:58.600Z"
+  }
+},
+{
+  "model": "orders.printingorder",
+  "pk": 2,
+  "fields": {
+    "order_number": "UQP-DEMO-002",
+    "customer": [
+      "maria"
+    ],
+    "shop": 2,
+    "status": "accepted",
+    "payment_status": "paid",
+    "payment_deadline": null,
+    "rejection_reason": "",
+    "cancellation_reason": "",
+    "subtotal_amount": "90.00",
+    "service_fee": "0.00",
+    "total_amount": "90.00",
+    "instructions": "Full color presentation slides.",
+    "pickup_date": "2026-10-26",
+    "pickup_time_slot": "02:00 PM - 02:30 PM",
+    "pickup_code": "UQP02",
+    "pickup_confirmed_at": null,
+    "pickup_confirmed_by": null,
+    "created_at": "2026-10-25T03:47:58.627Z",
+    "updated_at": "2026-10-25T03:47:58.627Z"
+  }
+},
+{
+  "model": "orders.printingorder",
+  "pk": 3,
+  "fields": {
+    "order_number": "UQP-43C6310D",
+    "customer": [
+      "student"
+    ],
+    "shop": 1,
+    "status": "submitted",
+    "payment_status": "pending",
+    "payment_deadline": null,
+    "rejection_reason": "",
+    "cancellation_reason": "",
+    "subtotal_amount": "20.00",
+    "service_fee": "0.00",
+    "total_amount": "20.00",
+    "instructions": "",
+    "pickup_date": "2026-10-27",
+    "pickup_time_slot": "12:00 PM - 12:30 PM",
+    "pickup_code": null,
+    "pickup_confirmed_at": null,
+    "pickup_confirmed_by": null,
+    "created_at": "2026-10-25T05:39:16.573Z",
+    "updated_at": "2026-10-25T05:40:18.115Z"
+  }
+},
+{
+  "model": "orders.printingorder",
+  "pk": 4,
+  "fields": {
+    "order_number": "UQP-106A80D0",
+    "customer": [
+      "student"
+    ],
+    "shop": 1,
+    "status": "submitted",
+    "payment_status": "unpaid",
+    "payment_deadline": null,
+    "rejection_reason": "",
+    "cancellation_reason": "",
+    "subtotal_amount": "6.00",
+    "service_fee": "0.00",
+    "total_amount": "6.00",
+    "instructions": "",
+    "pickup_date": "2026-10-26",
+    "pickup_time_slot": "10:30 AM - 11:00 AM",
+    "pickup_code": null,
+    "pickup_confirmed_at": null,
+    "pickup_confirmed_by": null,
+    "created_at": "2026-10-25T06:01:55.005Z",
+    "updated_at": "2026-10-25T06:01:55.005Z"
+  }
+},
+{
+  "model": "orders.printingorder",
+  "pk": 5,
+  "fields": {
+    "order_number": "UQP-8E9C97F5",
+    "customer": [
+      "student"
+    ],
+    "shop": 4,
+    "status": "cancelled",
+    "payment_status": "unpaid",
+    "payment_deadline": null,
+    "rejection_reason": "",
+    "cancellation_reason": "Cancelled by customer",
+    "subtotal_amount": "3.00",
+    "service_fee": "0.00",
+    "total_amount": "3.00",
+    "instructions": "",
+    "pickup_date": "2026-10-26",
+    "pickup_time_slot": "08:30 AM - 09:00 AM",
+    "pickup_code": null,
+    "pickup_confirmed_at": null,
+    "pickup_confirmed_by": null,
+    "created_at": "2026-10-25T06:59:30.023Z",
+    "updated_at": "2026-10-25T06:59:40.227Z"
+  }
+},
+{
+  "model": "orders.printingorder",
+  "pk": 6,
+  "fields": {
+    "order_number": "UQP-20DEC63D",
+    "customer": [
+      "student"
+    ],
+    "shop": 1,
+    "status": "cancelled",
+    "payment_status": "unpaid",
+    "payment_deadline": null,
+    "rejection_reason": "",
+    "cancellation_reason": "Cancelled by customer",
+    "subtotal_amount": "3.00",
+    "service_fee": "0.00",
+    "total_amount": "3.00",
+    "instructions": "",
+    "pickup_date": "2026-10-26",
+    "pickup_time_slot": "07:30 AM - 08:00 AM",
+    "pickup_code": null,
+    "pickup_confirmed_at": null,
+    "pickup_confirmed_by": null,
+    "created_at": "2026-10-25T07:01:00.488Z",
+    "updated_at": "2026-10-25T07:01:03.545Z"
+  }
+},
+{
+  "model": "orders.orderdocument",
+  "pk": 1,
+  "fields": {
+    "order": 1,
+    "file": "",
+    "original_filename": "Thesis_Chapter_1_Introduction.pdf",
+    "file_size": 204800,
+    "page_count": 15,
+    "paper_size": "A4",
+    "color_mode": "bw",
+    "print_side": "single",
+    "orientation": "portrait",
+    "page_range": "all",
+    "effective_pages": 1,
+    "paper_type": "standard",
+    "copies": 2,
+    "unit_price": "1.50",
+    "calculated_total": "45.00",
+    "created_at": "2026-10-25T03:47:58.604Z"
+  }
+},
+{
+  "model": "orders.orderdocument",
+  "pk": 2,
+  "fields": {
+    "order": 2,
+    "file": "",
+    "original_filename": "Project_Deck_Final.pdf",
+    "file_size": 1048576,
+    "page_count": 10,
+    "paper_size": "A4",
+    "color_mode": "color",
+    "print_side": "double",
+    "orientation": "portrait",
+    "page_range": "all",
+    "effective_pages": 1,
+    "paper_type": "standard",
+    "copies": 2,
+    "unit_price": "9.00",
+    "calculated_total": "90.00",
+    "created_at": "2026-10-25T03:47:58.632Z"
+  }
+},
+{
+  "model": "orders.orderdocument",
+  "pk": 3,
+  "fields": {
+    "order": 3,
+    "file": "order_documents/2026/10/25/Univ_Quick_Print_Prototype_info.pdf",
+    "original_filename": "Univ_Quick_Print_Prototype info.pdf",
+    "file_size": 208456,
+    "page_count": 4,
+    "paper_size": "Letter",
+    "color_mode": "color",
+    "print_side": "single",
+    "orientation": "portrait",
+    "page_range": "all",
+    "effective_pages": 1,
+    "paper_type": "standard",
+    "copies": 1,
+    "unit_price": "5.00",
+    "calculated_total": "20.00",
+    "created_at": "2026-10-25T05:39:16.578Z"
+  }
+},
+{
+  "model": "orders.orderdocument",
+  "pk": 4,
+  "fields": {
+    "order": 4,
+    "file": "order_documents/2026/10/25/univ_quick_print_logo.png",
+    "original_filename": "univ_quick_print_logo.png",
+    "file_size": 144985,
+    "page_count": 4,
+    "paper_size": "A4",
+    "color_mode": "bw",
+    "print_side": "single",
+    "orientation": "portrait",
+    "page_range": "all",
+    "effective_pages": 1,
+    "paper_type": "standard",
+    "copies": 1,
+    "unit_price": "1.50",
+    "calculated_total": "6.00",
+    "created_at": "2026-10-25T06:01:55.008Z"
+  }
+},
+{
+  "model": "orders.orderdocument",
+  "pk": 5,
+  "fields": {
+    "order": 5,
+    "file": "order_documents/2026/10/25/Univ_Quick_Print_Prototype_info_d0Ts51S.pdf",
+    "original_filename": "Univ_Quick_Print_Prototype info.pdf",
+    "file_size": 208456,
+    "page_count": 2,
+    "paper_size": "A4",
+    "color_mode": "bw",
+    "print_side": "single",
+    "orientation": "portrait",
+    "page_range": "all",
+    "effective_pages": 1,
+    "paper_type": "standard",
+    "copies": 1,
+    "unit_price": "1.50",
+    "calculated_total": "3.00",
+    "created_at": "2026-10-25T06:59:30.026Z"
+  }
+},
+{
+  "model": "orders.orderdocument",
+  "pk": 6,
+  "fields": {
+    "order": 6,
+    "file": "order_documents/2026/10/25/Univ_Quick_Print_Prototype_info_JskRYDT.pdf",
+    "original_filename": "Univ_Quick_Print_Prototype info.pdf",
+    "file_size": 208456,
+    "page_count": 2,
+    "paper_size": "A4",
+    "color_mode": "bw",
+    "print_side": "single",
+    "orientation": "portrait",
+    "page_range": "all",
+    "effective_pages": 1,
+    "paper_type": "standard",
+    "copies": 1,
+    "unit_price": "1.50",
+    "calculated_total": "3.00",
+    "created_at": "2026-10-25T07:01:00.491Z"
+  }
+},
+{
+  "model": "orders.orderstatushistory",
+  "pk": 1,
+  "fields": {
+    "order": 1,
+    "status": "submitted",
+    "changed_by": null,
+    "notes": "Order submitted by student.",
+    "created_at": "2026-10-25T03:47:58.607Z"
+  }
+},
+{
+  "model": "orders.orderstatushistory",
+  "pk": 2,
+  "fields": {
+    "order": 1,
+    "status": "accepted",
+    "changed_by": null,
+    "notes": "Accepted with code UQP01.",
+    "created_at": "2026-10-25T03:47:58.611Z"
+  }
+},
+{
+  "model": "orders.orderstatushistory",
+  "pk": 3,
+  "fields": {
+    "order": 1,
+    "status": "printing",
+    "changed_by": null,
+    "notes": "Printing started.",
+    "created_at": "2026-10-25T03:47:58.615Z"
+  }
+},
+{
+  "model": "orders.orderstatushistory",
+  "pk": 4,
+  "fields": {
+    "order": 1,
+    "status": "ready_for_pickup",
+    "changed_by": null,
+    "notes": "Packaged and ready for counter pickup.",
+    "created_at": "2026-10-25T03:47:58.619Z"
+  }
+},
+{
+  "model": "orders.orderstatushistory",
+  "pk": 5,
+  "fields": {
+    "order": 2,
+    "status": "submitted",
+    "changed_by": null,
+    "notes": "",
+    "created_at": "2026-10-25T03:47:58.636Z"
+  }
+},
+{
+  "model": "orders.orderstatushistory",
+  "pk": 6,
+  "fields": {
+    "order": 2,
+    "status": "accepted",
+    "changed_by": null,
+    "notes": "Accepted with code UQP02.",
+    "created_at": "2026-10-25T03:47:58.639Z"
+  }
+},
+{
+  "model": "orders.orderstatushistory",
+  "pk": 7,
+  "fields": {
+    "order": 3,
+    "status": "submitted",
+    "changed_by": [
+      "student"
+    ],
+    "notes": "Order submitted by customer.",
+    "created_at": "2026-10-25T05:39:16.579Z"
+  }
+},
+{
+  "model": "orders.orderstatushistory",
+  "pk": 8,
+  "fields": {
+    "order": 4,
+    "status": "submitted",
+    "changed_by": [
+      "student"
+    ],
+    "notes": "Order submitted by customer.",
+    "created_at": "2026-10-25T06:01:55.009Z"
+  }
+},
+{
+  "model": "orders.orderstatushistory",
+  "pk": 9,
+  "fields": {
+    "order": 5,
+    "status": "pending_acceptance",
+    "changed_by": [
+      "student"
+    ],
+    "notes": "Order submitted by customer.",
+    "created_at": "2026-10-25T06:59:30.028Z"
+  }
+},
+{
+  "model": "orders.orderstatushistory",
+  "pk": 10,
+  "fields": {
+    "order": 5,
+    "status": "cancelled",
+    "changed_by": [
+      "student"
+    ],
+    "notes": "Order cancelled: Cancelled by customer",
+    "created_at": "2026-10-25T06:59:40.230Z"
+  }
+},
+{
+  "model": "orders.orderstatushistory",
+  "pk": 11,
+  "fields": {
+    "order": 6,
+    "status": "pending_acceptance",
+    "changed_by": [
+      "student"
+    ],
+    "notes": "Order submitted by customer.",
+    "created_at": "2026-10-25T07:01:00.492Z"
+  }
+},
+{
+  "model": "orders.orderstatushistory",
+  "pk": 12,
+  "fields": {
+    "order": 6,
+    "status": "cancelled",
+    "changed_by": [
+      "student"
+    ],
+    "notes": "Order cancelled: Cancelled by customer",
+    "created_at": "2026-10-25T07:01:03.548Z"
+  }
+},
+{
+  "model": "payments.paymenttransaction",
+  "pk": 1,
+  "fields": {
+    "order": 1,
+    "user": [
+      "student"
+    ],
+    "payment_method": "gcash",
+    "transaction_reference": "TXN-GCASH-DEMO001",
+    "amount": "45.00",
+    "status": "success",
+    "simulated_mode": true,
+    "failure_reason": "",
+    "notes": "Sandbox GCash payment successful.",
+    "created_at": "2026-10-25T03:47:58.623Z",
+    "updated_at": "2026-10-25T03:47:58.623Z"
+  }
+},
+{
+  "model": "payments.paymenttransaction",
+  "pk": 2,
+  "fields": {
+    "order": 2,
+    "user": [
+      "maria"
+    ],
+    "payment_method": "maya",
+    "transaction_reference": "TXN-MAYA-DEMO002",
+    "amount": "90.00",
+    "status": "success",
+    "simulated_mode": true,
+    "failure_reason": "",
+    "notes": "Sandbox Maya payment successful.",
+    "created_at": "2026-10-25T03:47:58.642Z",
+    "updated_at": "2026-10-25T03:47:58.642Z"
+  }
+},
+{
+  "model": "payments.paymenttransaction",
+  "pk": 3,
+  "fields": {
+    "order": 3,
+    "user": [
+      "student"
+    ],
+    "payment_method": "gcash",
+    "transaction_reference": "TXN-GCASH-3D3126AF10",
+    "amount": "20.00",
+    "status": "pending",
+    "simulated_mode": true,
+    "failure_reason": "",
+    "notes": "Simulated pending sandbox payment via GCASH.",
+    "created_at": "2026-10-25T05:40:18.114Z",
+    "updated_at": "2026-10-25T05:40:18.114Z"
+  }
+},
+{
+  "model": "notifications.notification",
+  "pk": 1,
+  "fields": {
+    "recipient": [
+      "student"
+    ],
+    "title": "Order Ready for Pickup!",
+    "message": "Your order #UQP-DEMO-001 is ready for pickup! Present code UQP01 at Cebu Campus Print Hub.",
+    "notification_type": "ready_for_pickup",
+    "link": "/tracking/1",
+    "is_read": true,
+    "created_at": "2026-10-25T03:47:58.654Z"
+  }
+},
+{
+  "model": "notifications.notification",
+  "pk": 2,
+  "fields": {
+    "recipient": [
+      "owner_taft"
+    ],
+    "title": "Your Shop Has Been Approved!",
+    "message": "Congratulations! 'Cebu Document Express (Pending)' is now approved and active on Univ Quick Print.",
+    "notification_type": "general",
+    "link": "/shop/dashboard",
+    "is_read": false,
+    "created_at": "2026-10-25T04:50:50.628Z"
+  }
+},
+{
+  "model": "notifications.notification",
+  "pk": 3,
+  "fields": {
+    "recipient": [
+      "owner_taft"
+    ],
+    "title": "Shop Suspended",
+    "message": "Shop 'Cebu Document Express (Pending)' has been temporarily suspended by an administrator.",
+    "notification_type": "general",
+    "link": "",
+    "is_read": false,
+    "created_at": "2026-10-25T04:51:12.853Z"
+  }
+},
+{
+  "model": "notifications.notification",
+  "pk": 4,
+  "fields": {
+    "recipient": [
+      "owner_taft"
+    ],
+    "title": "Shop Suspended",
+    "message": "Shop 'Cebu Document Express (Pending)' has been temporarily suspended by an administrator.",
+    "notification_type": "general",
+    "link": "",
+    "is_read": false,
+    "created_at": "2026-10-25T04:51:17.943Z"
+  }
+},
+{
+  "model": "notifications.notification",
+  "pk": 5,
+  "fields": {
+    "recipient": [
+      "owner_taft"
+    ],
+    "title": "Shop Suspended",
+    "message": "Shop 'Cebu Document Express (Pending)' has been temporarily suspended by an administrator.",
+    "notification_type": "general",
+    "link": "",
+    "is_read": false,
+    "created_at": "2026-10-25T04:51:19.259Z"
+  }
+},
+{
+  "model": "notifications.notification",
+  "pk": 6,
+  "fields": {
+    "recipient": [
+      "owner_taft"
+    ],
+    "title": "Your Shop Has Been Approved!",
+    "message": "Congratulations! 'Cebu Document Express (Pending)' is now approved and active on Univ Quick Print.",
+    "notification_type": "general",
+    "link": "/shop/dashboard",
+    "is_read": false,
+    "created_at": "2026-10-25T04:51:21.106Z"
+  }
+},
+{
+  "model": "notifications.notification",
+  "pk": 7,
+  "fields": {
+    "recipient": [
+      "owner_taft"
+    ],
+    "title": "Shop Suspended",
+    "message": "Shop 'Cebu Document Express (Pending)' has been temporarily suspended by an administrator.",
+    "notification_type": "general",
+    "link": "",
+    "is_read": false,
+    "created_at": "2026-10-25T04:51:22.124Z"
+  }
+},
+{
+  "model": "notifications.notification",
+  "pk": 8,
+  "fields": {
+    "recipient": [
+      "owner_taft"
+    ],
+    "title": "New Order #UQP-43C6310D",
+    "message": "Juan Dela Cruz submitted a new printing order (₱20.00).",
+    "notification_type": "order_submitted",
+    "link": "/shop/orders/3",
+    "is_read": true,
+    "created_at": "2026-10-25T05:39:16.579Z"
+  }
+},
+{
+  "model": "notifications.notification",
+  "pk": 9,
+  "fields": {
+    "recipient": [
+      "student"
+    ],
+    "title": "Order Submitted Successfully",
+    "message": "Your order #UQP-43C6310D has been submitted to Cebu Campus Print Hub.",
+    "notification_type": "order_submitted",
+    "link": "/tracking/3",
+    "is_read": true,
+    "created_at": "2026-10-25T05:39:16.579Z"
+  }
+},
+{
+  "model": "notifications.notification",
+  "pk": 10,
+  "fields": {
+    "recipient": [
+      "owner_express"
+    ],
+    "title": "Your Shop Has Been Approved!",
+    "message": "Congratulations! 'Cebu Document Express' is now approved and active on Univ Quick Print.",
+    "notification_type": "general",
+    "link": "/shop/dashboard",
+    "is_read": false,
+    "created_at": "2026-10-25T05:44:13.893Z"
+  }
+},
+{
+  "model": "notifications.notification",
+  "pk": 11,
+  "fields": {
+    "recipient": [
+      "owner_taft"
+    ],
+    "title": "New Order #UQP-106A80D0",
+    "message": "Juan Dela Cruz submitted a new printing order (₱6.00).",
+    "notification_type": "order_submitted",
+    "link": "/shop/orders/4",
+    "is_read": true,
+    "created_at": "2026-10-25T06:01:55.009Z"
+  }
+},
+{
+  "model": "notifications.notification",
+  "pk": 12,
+  "fields": {
+    "recipient": [
+      "student"
+    ],
+    "title": "Order Submitted Successfully",
+    "message": "Your order #UQP-106A80D0 has been submitted to Cebu Campus Print Hub.",
+    "notification_type": "order_submitted",
+    "link": "/tracking/4",
+    "is_read": true,
+    "created_at": "2026-10-25T06:01:55.009Z"
+  }
+},
+{
+  "model": "notifications.notification",
+  "pk": 13,
+  "fields": {
+    "recipient": [
+      "owner_express"
+    ],
+    "title": "New Order #UQP-8E9C97F5",
+    "message": "Juan Dela Cruz submitted a new printing order (₱3.00).",
+    "notification_type": "order_submitted",
+    "link": "/shop/orders/5",
+    "is_read": false,
+    "created_at": "2026-10-25T06:59:30.031Z"
+  }
+},
+{
+  "model": "notifications.notification",
+  "pk": 14,
+  "fields": {
+    "recipient": [
+      "student"
+    ],
+    "title": "Order Submitted Successfully",
+    "message": "Your order #UQP-8E9C97F5 has been submitted to Cebu Document Express.",
+    "notification_type": "order_submitted",
+    "link": "/tracking/5",
+    "is_read": false,
+    "created_at": "2026-10-25T06:59:30.033Z"
+  }
+},
+{
+  "model": "notifications.notification",
+  "pk": 15,
+  "fields": {
+    "recipient": [
+      "owner_express"
+    ],
+    "title": "Order #UQP-8E9C97F5 Cancelled",
+    "message": "Customer cancelled order #UQP-8E9C97F5. Reason: Cancelled by customer",
+    "notification_type": "order_cancelled",
+    "link": "",
+    "is_read": false,
+    "created_at": "2026-10-25T06:59:40.235Z"
+  }
+},
+{
+  "model": "notifications.notification",
+  "pk": 16,
+  "fields": {
+    "recipient": [
+      "owner_taft"
+    ],
+    "title": "New Order #UQP-20DEC63D",
+    "message": "Juan Dela Cruz submitted a new printing order (₱3.00).",
+    "notification_type": "order_submitted",
+    "link": "/shop/orders/6",
+    "is_read": false,
+    "created_at": "2026-10-25T07:01:00.496Z"
+  }
+},
+{
+  "model": "notifications.notification",
+  "pk": 17,
+  "fields": {
+    "recipient": [
+      "student"
+    ],
+    "title": "Order Submitted Successfully",
+    "message": "Your order #UQP-20DEC63D has been submitted to Cebu Campus Print Hub.",
+    "notification_type": "order_submitted",
+    "link": "/tracking/6",
+    "is_read": false,
+    "created_at": "2026-10-25T07:01:00.499Z"
+  }
+},
+{
+  "model": "notifications.notification",
+  "pk": 18,
+  "fields": {
+    "recipient": [
+      "owner_taft"
+    ],
+    "title": "Order #UQP-20DEC63D Cancelled",
+    "message": "Customer cancelled order #UQP-20DEC63D. Reason: Cancelled by customer",
+    "notification_type": "order_cancelled",
+    "link": "",
+    "is_read": false,
+    "created_at": "2026-10-25T07:01:03.552Z"
+  }
+},
+{
+  "model": "support.supportquestion",
+  "pk": 1,
+  "fields": {
+    "user": [
+      "student"
+    ],
+    "subject": "Test Subject",
+    "category": "general",
+    "message": "This is a test message.",
+    "status": "open",
+    "admin_response": "",
+    "answered_by": null,
+    "answered_at": null,
+    "created_at": "2026-10-25T05:36:51.018Z",
+    "updated_at": "2026-10-25T05:36:51.018Z"
+  }
+},
+{
+  "model": "support.supportquestion",
+  "pk": 2,
+  "fields": {
+    "user": [
+      "student"
+    ],
+    "subject": "trial",
+    "category": "general",
+    "message": "Hi po sainyo",
+    "status": "open",
+    "admin_response": "",
+    "answered_by": null,
+    "answered_at": null,
+    "created_at": "2026-10-25T09:03:13.661Z",
+    "updated_at": "2026-10-25T09:03:13.661Z"
+  }
+}
+]

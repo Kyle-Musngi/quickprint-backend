@@ -126,7 +126,7 @@ class ShopRegisterView(generics.CreateAPIView):
                 title="New Shop Registration Awaiting Approval",
                 message=f"'{shop.name}' was submitted by {request.user.full_name} and is awaiting review.",
                 notification_type=Notification.TYPE_GENERAL,
-                link="/admin/approvals"
+                link=f"/admin/approvals?shopId={shop.id}"
             )
 
         return Response({

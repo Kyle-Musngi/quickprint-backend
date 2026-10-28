@@ -15,7 +15,7 @@ class UserSerializer(serializers.ModelSerializer):
             'full_name', 'role', 'phone_number', 'student_id',
             'created_at'
         ]
-        read_only_fields = ['id', 'created_at']
+        read_only_fields = ['id', 'role', 'created_at']
 
 
 class CustomTokenObtainPairSerializer(TokenObtainPairSerializer):
@@ -35,15 +35,17 @@ class RegisterSerializer(serializers.ModelSerializer):
             'username', 'email', 'first_name', 'last_name',
             'phone_number', 'student_id', 'role', 'password', 'confirm_password'
         ]
+        extra_kwargs = {
+            'role': {'read_only': True}
+        }
 
     def validate(self, attrs):
         if attrs.get('password') != attrs.get('confirm_password'):
             raise serializers.ValidationError({"password": "Passwords do not match."})
 
-        # Default role validation: allowed registration roles are customer and shop_owner
-        role = attrs.get('role', User.ROLE_CUSTOMER)
-        if role not in [User.ROLE_CUSTOMER, User.ROLE_SHOP_OWNER]:
-            attrs['role'] = User.ROLE_CUSTOMER
+        # All public registrations are strictly assigned the CUSTOMER role.
+        # Any attempt to pass 'shop_owner', 'admin', or other privileged roles is ignored/overridden.
+        attrs['role'] = User.ROLE_CUSTOMER
 
         return attrs
 

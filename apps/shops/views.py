@@ -5,13 +5,17 @@ from django.db import transaction
 from django.db.models import Q, Min, Avg, Count, F
 from datetime import datetime, time, timedelta
 from django.utils import timezone
-from .models import PrintingShop, ShopStaffMembership, ShopOperatingHours, ShopReview
+from rest_framework.parsers import MultiPartParser, FormParser, JSONParser
+from django.http import FileResponse
+import mimetypes
+from .models import PrintingShop, ShopStaffMembership, ShopOperatingHours, ShopReview, ShopApplicationAuditLog
 from .serializers import (
     PrintingShopListSerializer,
     PrintingShopDetailSerializer,
     ShopRegistrationSerializer,
     ShopOperatingHoursSerializer,
-    ShopReviewSerializer
+    ShopReviewSerializer,
+    ShopApplicationAuditLogSerializer
 )
 from apps.accounts.permissions import IsPlatformAdmin, IsShopOwner
 from apps.notifications.models import Notification
@@ -101,16 +105,13 @@ class ShopDetailView(generics.RetrieveAPIView):
 
 
 class ShopRegisterView(generics.CreateAPIView):
+    parser_classes = [MultiPartParser, FormParser, JSONParser]
     serializer_class = ShopRegistrationSerializer
     permission_classes = [permissions.IsAuthenticated]
 
     def create(self, request, *args, **kwargs):
-        if request.user.role not in ['shop_owner', 'admin'] and not request.user.is_superuser:
-            return Response(
-                {"detail": "Only registered Shop Owner accounts can apply to register a printing shop. Customer accounts cannot register printing businesses."},
-                status=status.HTTP_403_FORBIDDEN
-            )
-
+        # Any authenticated user (including Customer) can apply to become a Shop Owner.
+        # Submitting an application keeps the user as a CUSTOMER until administrator approval.
         serializer = self.get_serializer(data=request.data, context={'request': request})
         serializer.is_valid(raise_exception=True)
         shop = serializer.save()
@@ -392,50 +393,136 @@ class AdminShopApprovalActionView(APIView):
 
     def post(self, request, pk):
         shop = generics.get_object_or_404(PrintingShop, pk=pk)
-        action = request.data.get('action')  # approve, reject, suspend, reactivate
+        action = request.data.get('action')  # approve, reject, more_info, under_review, suspend, reactivate
         reason = request.data.get('reason', '').strip()
+        old_status = shop.status
 
         if action == 'approve':
-            shop.status = PrintingShop.STATUS_APPROVED
-            shop.rejection_reason = ''
-            shop.is_active = True
-            shop.save(update_fields=['status', 'rejection_reason', 'is_active', 'updated_at'])
-            
+            with transaction.atomic():
+                # 1. Update shop status to approved & active
+                shop.status = PrintingShop.STATUS_APPROVED
+                shop.rejection_reason = ''
+                shop.is_active = True
+                shop.save(update_fields=['status', 'rejection_reason', 'is_active', 'updated_at'])
+
+                # 2. Promote the customer account to SHOP_OWNER
+                owner = shop.owner
+                if owner.role != 'admin' and not owner.is_superuser:
+                    owner.role = 'shop_owner'
+                    owner.save(update_fields=['role', 'updated_at'])
+
+                # 3. Create audit trail
+                ShopApplicationAuditLog.objects.create(
+                    shop=shop,
+                    actor=request.user,
+                    action='approve',
+                    from_status=old_status,
+                    to_status=PrintingShop.STATUS_APPROVED,
+                    notes=f"Approved by Administrator {request.user.full_name}. Customer account elevated to Shop Owner."
+                )
+
             # Notify owner
             Notification.send(
                 recipient=shop.owner,
-                title="Your Shop Has Been Approved!",
-                message=f"Congratulations! '{shop.name}' is now approved and active on Univ Quick Print.",
+                title="Your Shop Has Been Approved! 🎉",
+                message=f"Congratulations! '{shop.name}' is now approved and active on Univ Quick Print. Your account is now a verified Shop Owner.",
                 notification_type=Notification.TYPE_GENERAL,
                 link="/shop/dashboard"
             )
-            return Response({"message": f"Shop '{shop.name}' has been approved.", "status": "approved"})
+            return Response({
+                "message": f"Shop '{shop.name}' has been approved. Owner {shop.owner.username} is now a Shop Owner.",
+                "status": "approved",
+                "owner_role": shop.owner.role
+            })
 
         elif action == 'reject':
             if not reason:
                 return Response({"error": "Rejection reason is required."}, status=status.HTTP_400_BAD_REQUEST)
-            shop.status = PrintingShop.STATUS_REJECTED
-            shop.is_active = False
-            shop.rejection_reason = reason
-            shop.save(update_fields=['status', 'rejection_reason', 'is_active', 'updated_at'])
             
+            with transaction.atomic():
+                shop.status = PrintingShop.STATUS_REJECTED
+                shop.is_active = False
+                shop.rejection_reason = reason
+                shop.save(update_fields=['status', 'rejection_reason', 'is_active', 'updated_at'])
+
+                ShopApplicationAuditLog.objects.create(
+                    shop=shop,
+                    actor=request.user,
+                    action='reject',
+                    from_status=old_status,
+                    to_status=PrintingShop.STATUS_REJECTED,
+                    notes=f"Application rejected by Admin {request.user.full_name}. Reason: {reason}"
+                )
+
             # Notify owner
             Notification.send(
                 recipient=shop.owner,
                 title="Shop Application Update",
-                message=f"Your application for '{shop.name}' was rejected: {reason}",
+                message=f"Your application for '{shop.name}' was not approved: {reason}",
                 notification_type=Notification.TYPE_GENERAL,
                 link="/shop-registration"
             )
             return Response({"message": f"Shop '{shop.name}' was rejected.", "status": "rejected"})
 
-        elif action == 'suspend':
-            if reason:
-                shop.rejection_reason = reason
-            shop.status = PrintingShop.STATUS_SUSPENDED
-            shop.is_active = False
-            shop.save(update_fields=['status', 'rejection_reason', 'is_active', 'updated_at'])
+        elif action in ['more_info', 'request_more_info']:
+            if not reason:
+                return Response({"error": "Please provide details on what additional information is required."}, status=status.HTTP_400_BAD_REQUEST)
             
+            with transaction.atomic():
+                shop.status = PrintingShop.STATUS_MORE_INFO
+                shop.rejection_reason = reason
+                shop.save(update_fields=['status', 'rejection_reason', 'updated_at'])
+
+                ShopApplicationAuditLog.objects.create(
+                    shop=shop,
+                    actor=request.user,
+                    action='more_info',
+                    from_status=old_status,
+                    to_status=PrintingShop.STATUS_MORE_INFO,
+                    notes=f"Additional information requested by Admin {request.user.full_name}: {reason}"
+                )
+
+            Notification.send(
+                recipient=shop.owner,
+                title="More Information Needed for Shop Application",
+                message=f"Administrator requires more details for '{shop.name}': {reason}",
+                notification_type=Notification.TYPE_GENERAL,
+                link="/shop-registration"
+            )
+            return Response({"message": "Requested more information from applicant.", "status": "more_information_required"})
+
+        elif action in ['under_review']:
+            with transaction.atomic():
+                shop.status = PrintingShop.STATUS_UNDER_REVIEW
+                shop.save(update_fields=['status', 'updated_at'])
+
+                ShopApplicationAuditLog.objects.create(
+                    shop=shop,
+                    actor=request.user,
+                    action='under_review',
+                    from_status=old_status,
+                    to_status=PrintingShop.STATUS_UNDER_REVIEW,
+                    notes=f"Application placed under review by Admin {request.user.full_name}."
+                )
+            return Response({"message": f"Shop '{shop.name}' is now under review.", "status": "under_review"})
+
+        elif action == 'suspend':
+            with transaction.atomic():
+                if reason:
+                    shop.rejection_reason = reason
+                shop.status = PrintingShop.STATUS_SUSPENDED
+                shop.is_active = False
+                shop.save(update_fields=['status', 'rejection_reason', 'is_active', 'updated_at'])
+
+                ShopApplicationAuditLog.objects.create(
+                    shop=shop,
+                    actor=request.user,
+                    action='suspend',
+                    from_status=old_status,
+                    to_status=PrintingShop.STATUS_SUSPENDED,
+                    notes=f"Shop suspended by Admin {request.user.full_name}. Reason: {reason or 'Administrative review'}"
+                )
+
             suspension_msg = f"Shop '{shop.name}' has been temporarily suspended by an administrator."
             if reason:
                 suspension_msg += f" Reason: {reason}"
@@ -448,10 +535,26 @@ class AdminShopApprovalActionView(APIView):
             return Response({"message": f"Shop '{shop.name}' has been suspended.", "status": "suspended"})
 
         elif action == 'reactivate':
-            shop.status = PrintingShop.STATUS_APPROVED
-            shop.is_active = True
-            shop.rejection_reason = ''
-            shop.save(update_fields=['status', 'rejection_reason', 'is_active', 'updated_at'])
+            with transaction.atomic():
+                shop.status = PrintingShop.STATUS_APPROVED
+                shop.is_active = True
+                shop.rejection_reason = ''
+                shop.save(update_fields=['status', 'rejection_reason', 'is_active', 'updated_at'])
+
+                owner = shop.owner
+                if owner.role != 'admin' and not owner.is_superuser:
+                    owner.role = 'shop_owner'
+                    owner.save(update_fields=['role', 'updated_at'])
+
+                ShopApplicationAuditLog.objects.create(
+                    shop=shop,
+                    actor=request.user,
+                    action='reactivate',
+                    from_status=old_status,
+                    to_status=PrintingShop.STATUS_APPROVED,
+                    notes=f"Shop reactivated by Admin {request.user.full_name}."
+                )
+
             Notification.send(
                 recipient=shop.owner,
                 title="Shop Reactivated",
@@ -461,7 +564,51 @@ class AdminShopApprovalActionView(APIView):
             )
             return Response({"message": f"Shop '{shop.name}' has been reactivated.", "status": "approved"})
 
-        return Response({"error": "Invalid action. Use approve, reject, suspend, or reactivate."}, status=status.HTTP_400_BAD_REQUEST)
+        return Response({"error": "Invalid action. Use approve, reject, more_info, under_review, suspend, or reactivate."}, status=status.HTTP_400_BAD_REQUEST)
+
+
+class ShopVerificationDocumentDownloadView(APIView):
+    """
+    Secure endpoint allowing administrators and the shop applicant to view or download
+    private verification documents (government_id, business_permit, proof_of_ownership).
+    """
+    permission_classes = [permissions.IsAuthenticated]
+
+    def get(self, request, pk, doc_type):
+        shop = generics.get_object_or_404(PrintingShop, pk=pk)
+        user = request.user
+
+        # Access check: Only platform admin or the applicant themselves
+        if user != shop.owner and user.role != 'admin' and not user.is_superuser:
+            return Response({"error": "You do not have permission to view verification documents for this shop."}, status=status.HTTP_403_FORBIDDEN)
+
+        if doc_type not in ['government_id', 'business_permit', 'proof_of_ownership']:
+            return Response({"error": "Invalid document type requested."}, status=status.HTTP_400_BAD_REQUEST)
+
+        file_field = getattr(shop, doc_type, None)
+        if not file_field or not file_field.name:
+            return Response({"error": f"No {doc_type.replace('_', ' ')} has been uploaded for this shop."}, status=status.HTTP_404_NOT_FOUND)
+
+        try:
+            if not file_field.storage.exists(file_field.name):
+                return Response({"error": f"The verification file '{file_field.name}' could not be located in server storage."}, status=status.HTTP_404_NOT_FOUND)
+            handle = file_field.open('rb')
+        except Exception as e:
+            return Response({"error": f"Failed to retrieve verification file: {str(e)}"}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+        content_type, _ = mimetypes.guess_type(file_field.name)
+        if not content_type:
+            content_type = 'application/octet-stream'
+
+        response = FileResponse(handle, content_type=content_type)
+        filename = file_field.name.split('/')[-1]
+        disposition = request.query_params.get('disposition', 'inline').lower()
+        if disposition not in ['inline', 'attachment']:
+            disposition = 'inline'
+
+        response['Content-Disposition'] = f'{disposition}; filename="{filename}"'
+        response['Access-Control-Expose-Headers'] = 'Content-Disposition, Content-Type'
+        return response
 
 
 class ShopReviewListCreateView(APIView):

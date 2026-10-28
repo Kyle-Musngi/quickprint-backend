@@ -6,12 +6,16 @@ import math
 
 class PrintingShop(models.Model):
     STATUS_PENDING = 'pending'
+    STATUS_UNDER_REVIEW = 'under_review'
+    STATUS_MORE_INFO = 'more_information_required'
     STATUS_APPROVED = 'approved'
     STATUS_REJECTED = 'rejected'
     STATUS_SUSPENDED = 'suspended'
 
     STATUS_CHOICES = (
         (STATUS_PENDING, 'Pending Approval'),
+        (STATUS_UNDER_REVIEW, 'Under Review'),
+        (STATUS_MORE_INFO, 'More Information Required'),
         (STATUS_APPROVED, 'Approved'),
         (STATUS_REJECTED, 'Rejected'),
         (STATUS_SUSPENDED, 'Suspended'),
@@ -28,8 +32,13 @@ class PrintingShop(models.Model):
     latitude = models.DecimalField(max_digits=10, decimal_places=7, null=True, blank=True)
     longitude = models.DecimalField(max_digits=10, decimal_places=7, null=True, blank=True)
     image = models.ImageField(upload_to='shop_images/', blank=True, null=True)
+
+    # Verification & Security Documents
+    government_id = models.FileField(upload_to='shop_verifications/gov_ids/%Y/%m/', blank=True, null=True)
+    business_permit = models.FileField(upload_to='shop_verifications/permits/%Y/%m/', blank=True, null=True)
+    proof_of_ownership = models.FileField(upload_to='shop_verifications/ownership/%Y/%m/', blank=True, null=True)
     
-    status = models.CharField(max_length=20, choices=STATUS_CHOICES, default=STATUS_PENDING)
+    status = models.CharField(max_length=30, choices=STATUS_CHOICES, default=STATUS_PENDING)
     rejection_reason = models.TextField(blank=True, default='')
     is_active = models.BooleanField(default=True)
     
@@ -192,4 +201,25 @@ class ShopReview(models.Model):
 
     def __str__(self):
         return f"{self.customer.username} -> {self.shop.name} ({self.rating}★)"
+
+
+class ShopApplicationAuditLog(models.Model):
+    """
+    Audit log tracking application reviews, status transitions, role changes,
+    and administrator notes for printing shop applications.
+    """
+    shop = models.ForeignKey(PrintingShop, on_delete=models.CASCADE, related_name='audit_logs')
+    actor = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.SET_NULL, null=True, blank=True)
+    action = models.CharField(max_length=50)  # e.g., 'submitted', 'approve', 'reject', 'more_info', 'suspend'
+    from_status = models.CharField(max_length=30, blank=True, default='')
+    to_status = models.CharField(max_length=30)
+    notes = models.TextField(blank=True, default='')
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        ordering = ['-created_at']
+
+    def __str__(self):
+        actor_name = self.actor.username if self.actor else 'System'
+        return f"{self.shop.name}: {self.from_status} -> {self.to_status} by {actor_name} at {self.created_at}"
 

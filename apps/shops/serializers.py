@@ -1,7 +1,16 @@
 from rest_framework import serializers
-from .models import PrintingShop, ShopStaffMembership, ShopOperatingHours, ShopReview
+from .models import PrintingShop, ShopStaffMembership, ShopOperatingHours, ShopReview, ShopApplicationAuditLog
 from apps.printing.models import ShopPricingRule, PrintingService
 from apps.accounts.serializers import UserSerializer
+
+
+class ShopApplicationAuditLogSerializer(serializers.ModelSerializer):
+    actor_name = serializers.CharField(source='actor.full_name', read_only=True)
+
+    class Meta:
+        model = ShopApplicationAuditLog
+        fields = ['id', 'actor', 'actor_name', 'action', 'from_status', 'to_status', 'notes', 'created_at']
+        read_only_fields = ['id', 'created_at']
 
 
 class ShopPricingRuleSimpleSerializer(serializers.ModelSerializer):
@@ -89,6 +98,7 @@ class PrintingShopDetailSerializer(serializers.ModelSerializer):
     pricing_rules = ShopPricingRuleSimpleSerializer(many=True, read_only=True)
     services = PrintingServiceSimpleSerializer(many=True, read_only=True)
     operating_hours = ShopOperatingHoursSerializer(many=True, read_only=True)
+    audit_logs = ShopApplicationAuditLogSerializer(many=True, read_only=True)
     owner = UserSerializer(read_only=True)
     average_rating = serializers.ReadOnlyField()
     review_count = serializers.ReadOnlyField()
@@ -98,11 +108,12 @@ class PrintingShopDetailSerializer(serializers.ModelSerializer):
         fields = [
             'id', 'owner', 'name', 'description', 'email', 'phone_number',
             'address', 'city', 'barangay', 'latitude', 'longitude', 'image',
+            'government_id', 'business_permit', 'proof_of_ownership',
             'status', 'rejection_reason', 'is_active',
             'opening_time', 'closing_time', 'operating_days',
             'pickup_slot_interval_minutes', 'slot_capacity',
             'is_open', 'average_rating', 'review_count', 'pricing_rules',
-            'services', 'operating_hours', 'created_at'
+            'services', 'operating_hours', 'audit_logs', 'created_at'
         ]
         read_only_fields = ['id', 'status', 'rejection_reason', 'created_at', 'owner']
 
@@ -113,20 +124,42 @@ class ShopRegistrationSerializer(serializers.ModelSerializer):
         fields = [
             'name', 'description', 'email', 'phone_number',
             'address', 'city', 'barangay', 'latitude', 'longitude',
+            'image', 'government_id', 'business_permit', 'proof_of_ownership',
             'opening_time', 'closing_time', 'operating_days'
         ]
 
+    def validate(self, attrs):
+        user = self.context['request'].user
+        # Prevent duplicate/conflicting active applications
+        existing_active = PrintingShop.objects.filter(
+            owner=user,
+            status__in=[PrintingShop.STATUS_PENDING, PrintingShop.STATUS_UNDER_REVIEW, PrintingShop.STATUS_APPROVED]
+        ).first()
+        if existing_active:
+            if existing_active.status == PrintingShop.STATUS_APPROVED:
+                raise serializers.ValidationError("You already own an active, approved printing shop.")
+            else:
+                raise serializers.ValidationError("You already have a pending printing shop application awaiting administrator review.")
+        return attrs
+
     def create(self, validated_data):
         user = self.context['request'].user
-        # Mark user as shop_owner if not already
-        if user.role != 'admin':
-            user.role = 'shop_owner'
-            user.save(update_fields=['role'])
-        
+        # The user role is NOT upgraded here. The applicant remains a CUSTOMER
+        # until an administrator verifies the identity documents and approves the shop.
         shop = PrintingShop.objects.create(
             owner=user,
             status=PrintingShop.STATUS_PENDING,
             **validated_data
+        )
+
+        # Record audit log entry
+        ShopApplicationAuditLog.objects.create(
+            shop=shop,
+            actor=user,
+            action='submitted',
+            from_status='',
+            to_status=PrintingShop.STATUS_PENDING,
+            notes='Printing shop application and verification documents submitted by customer.'
         )
 
         # Create default pricing rules for new shop

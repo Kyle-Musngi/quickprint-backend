@@ -11,6 +11,7 @@ from .views import (
     ShopReviewListCreateView,
     MyShopReviewsView,
     AdminReviewModerationView,
+    ShopVerificationDocumentDownloadView,
 )
 
 urlpatterns = [
@@ -22,6 +23,7 @@ urlpatterns = [
     path('<int:pk>/', ShopDetailView.as_view(), name='shop-detail'),
     path('<int:pk>/pickup-slots/', ShopPickupSlotsView.as_view(), name='shop-pickup-slots'),
     path('<int:pk>/reviews/', ShopReviewListCreateView.as_view(), name='shop-reviews'),
+    path('<int:pk>/verifications/<str:doc_type>/', ShopVerificationDocumentDownloadView.as_view(), name='shop-verification-document'),
     
     # Admin shop endpoints
     path('admin/all/', AdminShopListView.as_view(), name='admin-shop-list'),

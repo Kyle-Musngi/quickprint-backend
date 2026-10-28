@@ -263,16 +263,32 @@ class ShopRatingsAndReviewsTests(TestCase):
         self.assertEqual(self.shop.status, PrintingShop.STATUS_APPROVED)
         self.assertTrue(self.shop.is_active)
 
-    def test_customer_cannot_register_printing_shop(self):
-        customer = User.objects.create_user(username='unauthorized_cust', password='CustPass123!', role=User.ROLE_CUSTOMER)
+    def test_customer_shop_application_and_admin_approval(self):
+        customer = User.objects.create_user(username='applicant_cust', password='CustPass123!', role=User.ROLE_CUSTOMER)
         self.client.force_authenticate(user=customer)
         payload = {
-            'name': 'Hacker Print Shop',
-            'email': 'hacker@print.ph',
+            'name': 'Campus Quick Print Hub',
+            'email': 'hub@campusprint.ph',
             'phone_number': '032 555 1234',
-            'address': 'Lahug',
+            'address': 'Lahug Main Gate',
             'city': 'Cebu City'
         }
+        # 1. Customer submits shop application -> 201 Created
         res = self.client.post('/api/v1/shops/register/', payload)
-        self.assertEqual(res.status_code, 403)
+        self.assertEqual(res.status_code, 201)
+        
+        # 2. Customer remains a customer before approval
+        customer.refresh_from_db()
+        self.assertEqual(customer.role, User.ROLE_CUSTOMER)
+
+        # 3. Admin reviews and approves application
+        admin_user = User.objects.create_user(username='admin_reviewer', password='AdminPass123!', role=User.ROLE_ADMIN)
+        self.client.force_authenticate(user=admin_user)
+        shop_id = res.data['shop']['id']
+        approve_res = self.client.post(f'/api/v1/shops/admin/{shop_id}/action/', {'action': 'approve'})
+        self.assertEqual(approve_res.status_code, 200)
+
+        # 4. Verified: Account is elevated to SHOP_OWNER
+        customer.refresh_from_db()
+        self.assertEqual(customer.role, User.ROLE_SHOP_OWNER)
 

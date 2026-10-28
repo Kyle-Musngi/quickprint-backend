@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import PrintingShop, ShopOperatingHours, ShopReview
+from .models import PrintingShop, ShopOperatingHours, ShopReview, ShopApplicationAuditLog
 
 
 @admin.register(PrintingShop)
@@ -21,4 +21,12 @@ class ShopReviewAdmin(admin.ModelAdmin):
     list_display = ('shop', 'customer', 'rating', 'is_moderated', 'created_at')
     list_filter = ('rating', 'is_moderated')
     search_fields = ('shop__name', 'customer__username', 'review_text')
+
+
+@admin.register(ShopApplicationAuditLog)
+class ShopApplicationAuditLogAdmin(admin.ModelAdmin):
+    list_display = ('shop', 'actor', 'action', 'from_status', 'to_status', 'created_at')
+    list_filter = ('action', 'created_at')
+    search_fields = ('shop__name', 'actor__username', 'notes')
+    readonly_fields = ('created_at',)
 

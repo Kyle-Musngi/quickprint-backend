@@ -7,7 +7,7 @@ from datetime import datetime, timedelta
 
 from apps.orders.models import PrintingOrder
 from apps.shops.models import PrintingShop, ShopStaffMembership
-from apps.payments.models import PaymentTransaction
+from apps.payments.models import PaymentTransaction, RefundRequest
 from apps.accounts.permissions import IsPlatformAdmin, IsShopOwner
 from django.contrib.auth import get_user_model
 
@@ -80,6 +80,11 @@ class ShopDashboardOverviewView(APIView):
             'pickup_date', 'pickup_time_slot', 'created_at'
         )
 
+        pending_refunds = RefundRequest.objects.filter(
+            order__shop=shop,
+            status__in=[RefundRequest.STATUS_PENDING, RefundRequest.STATUS_UNDER_REVIEW]
+        ).count()
+
         return Response({
             "shop": {
                 "id": shop.id,
@@ -103,6 +108,7 @@ class ShopDashboardOverviewView(APIView):
                 "cancelled": status_counts['cancelled'] or 0,
                 "rejected": status_counts['rejected'] or 0,
                 "expired": status_counts['expired'] or 0,
+                "refund_requests": pending_refunds,
             },
             "today_orders": today_orders,
             "monthly_orders": monthly_orders,
@@ -177,6 +183,13 @@ class AdminDashboardOverviewView(APIView):
             'status', 'payment_status', 'total_amount', 'created_at'
         )
 
+        refunds_stats = RefundRequest.objects.aggregate(
+            total=Count('id'),
+            pending=Count('id', filter=Q(status__in=[RefundRequest.STATUS_PENDING, RefundRequest.STATUS_UNDER_REVIEW])),
+            completed=Count('id', filter=Q(status=RefundRequest.STATUS_COMPLETED)),
+            rejected=Count('id', filter=Q(status=RefundRequest.STATUS_REJECTED))
+        )
+
         return Response({
             "users": {
                 "customers": total_customers,
@@ -210,6 +223,12 @@ class AdminDashboardOverviewView(APIView):
                 "failed_count": payments_stats['failed_count'] or 0,
                 "total_volume": str(payments_stats['total_volume'] or 0.00),
                 "is_sandbox_notice": "Sandbox simulated test transactions."
+            },
+            "refunds": {
+                "total": refunds_stats['total'] or 0,
+                "pending": refunds_stats['pending'] or 0,
+                "completed": refunds_stats['completed'] or 0,
+                "rejected": refunds_stats['rejected'] or 0,
             },
             "recent_shops": list(recent_shops),
             "recent_orders": list(recent_orders)

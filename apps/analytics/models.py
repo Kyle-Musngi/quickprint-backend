@@ -17,3 +17,15 @@ class AuditLog(models.Model):
     def __str__(self):
         username = self.user.username if self.user else 'System'
         return f"[{self.created_at.strftime('%Y-%m-%d %H:%M')}] {username} {self.action} on {self.target_model}:{self.target_id}"
+
+
+class PlatformSetting(models.Model):
+    key = models.CharField(max_length=100, unique=True)
+    value = models.TextField(blank=True, default='')
+    description = models.CharField(max_length=255, blank=True, default='')
+    updated_by = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.SET_NULL, null=True, blank=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return f"{self.key}: {self.value[:30]}"
+

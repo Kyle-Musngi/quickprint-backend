@@ -1,5 +1,6 @@
 from django.db import models
 from django.conf import settings
+# pyrefly: ignore[missing-import]
 from apps.orders.models import PrintingOrder
 import uuid
 

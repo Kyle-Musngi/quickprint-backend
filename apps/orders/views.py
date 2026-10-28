@@ -1,4 +1,6 @@
 import json
+import mimetypes
+import urllib.parse
 from decimal import Decimal
 from django.db import transaction
 from django.http import FileResponse, Http404
@@ -8,8 +10,18 @@ from rest_framework import generics, permissions, status
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.parsers import MultiPartParser, FormParser, JSONParser
+from rest_framework_simplejwt.authentication import JWTAuthentication
+from rest_framework_simplejwt.exceptions import InvalidToken, TokenError
 
-from .models import PrintingOrder, OrderDocument, OrderStatusHistory, GlobalPickupSequence
+from .models import (
+    PrintingOrder,
+    OrderDocument,
+    OrderStatusHistory,
+    GlobalPickupSequence,
+    ShopDailyQueueSequence,
+    ShopQueueEntry,
+    get_order_queue_details,
+)
 from .serializers import (
     PrintingOrderDetailSerializer,
     PrintingOrderListSerializer,
@@ -242,6 +254,9 @@ class OrderCreateView(APIView):
                     calculated_total=item['calculated_total']
                 )
 
+            # Assign persistent queue entry for this shop
+            ShopQueueEntry.assign_for_order(order)
+
         # Create history record
         OrderStatusHistory.objects.create(
             order=order,
@@ -386,6 +401,8 @@ class OrderAcceptView(APIView):
         with transaction.atomic():
             if not order.pickup_code:
                 order.pickup_code = GlobalPickupSequence.get_next_pickup_code()
+
+            ShopQueueEntry.assign_for_order(order)
 
             order.status = PrintingOrder.STATUS_AWAITING_PAYMENT
             # Configurable payment deadline (24 hours)
@@ -588,17 +605,78 @@ class OrderConfirmPickupView(APIView):
 
 
 class OrderDocumentDownloadView(APIView):
-    permission_classes = [permissions.IsAuthenticated]
+    """
+    Authenticated and authorized document viewing and download endpoint.
+    Supports JWT authorization header or ?token=<jwt> parameter for direct browser preview.
+    Prevents cross-shop and unauthorized customer document access.
+    """
+    permission_classes = [permissions.AllowAny]
 
     def get(self, request, order_id, doc_id):
+        # 1. Resolve user: check header auth first, then fallback to ?token= query parameter
+        user = request.user
+        if not user or not user.is_authenticated:
+            token = request.query_params.get('token')
+            if token:
+                try:
+                    jwt_auth = JWTAuthentication()
+                    validated_token = jwt_auth.get_validated_token(token)
+                    user = jwt_auth.get_user(validated_token)
+                except (InvalidToken, TokenError):
+                    return Response({"error": "Invalid or expired authorization token."}, status=status.HTTP_401_UNAUTHORIZED)
+
+        if not user or not user.is_authenticated:
+            return Response({"error": "Authentication required to access documents."}, status=status.HTTP_401_UNAUTHORIZED)
+
+        # 2. Check order existence and access permissions
         order = get_object_or_404(PrintingOrder, pk=order_id)
-        if not user_can_access_order(request.user, order):
-            return Response({"error": "Unauthorized access to document."}, status=status.HTTP_403_FORBIDDEN)
+        if not user_can_access_order(user, order):
+            return Response({"error": "You do not have permission to access documents from this order."}, status=status.HTTP_403_FORBIDDEN)
 
-        document = get_object_or_404(OrderDocument, pk=doc_id, order=order)
-        if not document.file:
-            raise Http404("Document file not found.")
+        # 3. Check document belongs to this specific order
+        try:
+            document = order.documents.get(pk=doc_id)
+        except OrderDocument.DoesNotExist:
+            return Response({"error": "Document not found for this order."}, status=status.HTTP_404_NOT_FOUND)
 
-        response = FileResponse(document.file.open('rb'))
-        response['Content-Disposition'] = f'inline; filename="{document.original_filename}"'
+        # 4. Check if file is stored and exists
+        if not document.file or not document.file.name:
+            return Response({"error": f"The document file '{document.original_filename}' is not stored on the server."}, status=status.HTTP_404_NOT_FOUND)
+
+        try:
+            if not document.file.storage.exists(document.file.name):
+                return Response({"error": f"The document file '{document.original_filename}' could not be located in storage."}, status=status.HTTP_404_NOT_FOUND)
+            file_handle = document.file.open('rb')
+        except Exception as e:
+            return Response({"error": f"Failed to retrieve file from storage: {str(e)}"}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+        # 5. Content-Type and Disposition
+        disposition = request.query_params.get('disposition', 'inline').lower()
+        if disposition not in ['inline', 'attachment']:
+            disposition = 'inline'
+
+        content_type, _ = mimetypes.guess_type(document.original_filename)
+        if not content_type:
+            content_type = 'application/octet-stream'
+
+        response = FileResponse(file_handle, content_type=content_type)
+        safe_filename = document.original_filename.replace('"', '').replace('\n', '').replace('\r', '')
+        encoded_filename = urllib.parse.quote(safe_filename)
+        response['Content-Disposition'] = f'{disposition}; filename="{safe_filename}"; filename*=UTF-8\'\'{encoded_filename}'
+        response['Access-Control-Expose-Headers'] = 'Content-Disposition, Content-Type, Content-Length'
         return response
+
+
+class OrderQueueStatusView(APIView):
+    """
+    Returns real-time queue position, tickets ahead, and estimated wait for an order.
+    """
+    permission_classes = [permissions.IsAuthenticated]
+
+    def get(self, request, pk):
+        order = get_object_or_404(PrintingOrder, pk=pk)
+        if not user_can_access_order(request.user, order):
+            return Response({"error": "Unauthorized access to order queue."}, status=status.HTTP_403_FORBIDDEN)
+        return Response(get_order_queue_details(order))
+
+

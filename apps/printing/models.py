@@ -1,4 +1,5 @@
 from django.db import models
+# pyrefly: ignore[missing-import]
 from apps.shops.models import PrintingShop
 
 

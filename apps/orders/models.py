@@ -175,3 +175,146 @@ class OrderStatusHistory(models.Model):
 
     def __str__(self):
         return f"{self.order.order_number} -> {self.status} at {self.created_at}"
+
+
+class ShopDailyQueueSequence(models.Model):
+    """
+    Maintains daily sequential queue counters per shop.
+    Resets numbering every day for each shop (e.g. #1, #2, #3...).
+    Safe under high concurrency using select_for_update().
+    """
+    shop = models.ForeignKey(PrintingShop, on_delete=models.CASCADE, related_name='queue_sequences')
+    queue_date = models.DateField(db_index=True)
+    last_number = models.PositiveIntegerField(default=0)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        unique_together = ('shop', 'queue_date')
+        indexes = [
+            models.Index(fields=['shop', 'queue_date']),
+        ]
+
+    def __str__(self):
+        return f"{self.shop.name} ({self.queue_date}): Last #{self.last_number}"
+
+
+class ShopQueueEntry(models.Model):
+    """
+    Persistent queue record for an order in a specific shop's queue.
+    Preserved even when order is cancelled or completed for audit/history.
+    """
+    order = models.OneToOneField(PrintingOrder, on_delete=models.CASCADE, related_name='queue_entry')
+    shop = models.ForeignKey(PrintingShop, on_delete=models.CASCADE, related_name='queue_entries')
+    queue_number = models.PositiveIntegerField()
+    queue_date = models.DateField(db_index=True)
+    created_at = models.DateTimeField(auto_now_add=True, db_index=True)
+
+    class Meta:
+        ordering = ['created_at']
+        indexes = [
+            models.Index(fields=['shop', 'created_at']),
+            models.Index(fields=['shop', 'queue_date', 'queue_number']),
+        ]
+
+    def __str__(self):
+        return f"{self.shop.name} #{self.queue_number} for Order {self.order.order_number}"
+
+    @classmethod
+    def assign_for_order(cls, order):
+        """
+        Idempotently assigns a queue entry to an order under atomic transaction
+        with select_for_update row locking on the shop's daily sequence.
+        """
+        if hasattr(order, 'queue_entry') and order.queue_entry:
+            return order.queue_entry
+
+        from django.utils import timezone
+        with transaction.atomic():
+            existing = cls.objects.filter(order=order).first()
+            if existing:
+                return existing
+
+            today = timezone.localdate()
+            seq, _ = ShopDailyQueueSequence.objects.select_for_update().get_or_create(
+                shop=order.shop,
+                queue_date=today,
+                defaults={'last_number': 0}
+            )
+            seq.last_number += 1
+            seq.save(update_fields=['last_number', 'updated_at'])
+
+            entry = cls.objects.create(
+                order=order,
+                shop=order.shop,
+                queue_number=seq.last_number,
+                queue_date=today
+            )
+            return entry
+
+
+ACTIVE_QUEUE_STATUSES = [
+    PrintingOrder.STATUS_PENDING_ACCEPTANCE,
+    'submitted',
+    'received',
+    PrintingOrder.STATUS_AWAITING_PAYMENT,
+    'accepted',
+    PrintingOrder.STATUS_IN_PRODUCTION,
+    'printing',
+    PrintingOrder.STATUS_READY_FOR_PICKUP,
+]
+
+
+def get_order_queue_details(order):
+    """
+    Calculates authoritative real-time queue position for an order.
+    Position reflects eligible active orders ahead in the same shop.
+    """
+    from django.db import models
+    from django.utils import timezone
+
+    entry = getattr(order, 'queue_entry', None)
+    if not entry:
+        entry = ShopQueueEntry.assign_for_order(order)
+
+    is_active = order.status in ACTIVE_QUEUE_STATUSES
+    if is_active:
+        orders_ahead = PrintingOrder.objects.filter(
+            shop=order.shop,
+            status__in=ACTIVE_QUEUE_STATUSES,
+        ).filter(
+            models.Q(queue_entry__created_at__lt=entry.created_at) |
+            models.Q(queue_entry__created_at=entry.created_at, id__lt=order.id)
+        ).exclude(pk=order.pk).count()
+
+        current_position = orders_ahead + 1
+        if order.status == PrintingOrder.STATUS_READY_FOR_PICKUP:
+            estimated_wait_minutes = 0
+            wait_time_display = "Ready for pickup now"
+        elif orders_ahead == 0:
+            estimated_wait_minutes = 3
+            wait_time_display = "~3-5 mins (Next in line)"
+        else:
+            estimated_wait_minutes = max(5, orders_ahead * 5)
+            wait_time_display = f"~{estimated_wait_minutes} mins ({orders_ahead} ahead)"
+    else:
+        orders_ahead = 0
+        current_position = None
+        estimated_wait_minutes = None
+        wait_time_display = "Queue session completed" if order.status == PrintingOrder.STATUS_COMPLETED else "Exited queue"
+
+    return {
+        'queue_number': entry.queue_number,
+        'queue_number_display': f"#{entry.queue_number}",
+        'queue_date': entry.queue_date.isoformat(),
+        'position': current_position,
+        'orders_ahead': orders_ahead,
+        'is_active': is_active,
+        'estimated_wait_minutes': estimated_wait_minutes,
+        'estimated_wait_display': wait_time_display,
+        'shop_name': order.shop.name,
+        'order_number': order.order_number,
+        'status': order.status,
+        'status_display': order.get_status_display(),
+        'updated_at': timezone.now().isoformat(),
+    }
+

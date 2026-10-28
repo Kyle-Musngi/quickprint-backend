@@ -506,3 +506,200 @@ class PaymentAfterAcceptanceWorkflowTests(TestCase):
         self.order.refresh_from_db()
         self.assertEqual(self.order.status, PrintingOrder.STATUS_COMPLETED)
 
+
+class ShopDocumentAccessAndQueueSystemTests(TestCase):
+    def setUp(self):
+        self.client = APIClient()
+        self.customer1 = User.objects.create_user(username='cust1', password='passWord123!', role=User.ROLE_CUSTOMER)
+        self.customer2 = User.objects.create_user(username='cust2', password='passWord123!', role=User.ROLE_CUSTOMER)
+        self.shop_owner_a = User.objects.create_user(username='owner_a', password='passWord123!', role=User.ROLE_SHOP_OWNER)
+        self.shop_owner_b = User.objects.create_user(username='owner_b', password='passWord123!', role=User.ROLE_SHOP_OWNER)
+
+        self.shop_a = PrintingShop.objects.create(
+            owner=self.shop_owner_a,
+            name='Shop Alpha Cebu',
+            email='alpha@cebu.ph',
+            phone_number='09110001111',
+            address='Osmena Blvd',
+            status=PrintingShop.STATUS_APPROVED
+        )
+
+        self.shop_b = PrintingShop.objects.create(
+            owner=self.shop_owner_b,
+            name='Shop Beta Cebu',
+            email='beta@cebu.ph',
+            phone_number='09220002222',
+            address='Colon St',
+            status=PrintingShop.STATUS_APPROVED
+        )
+
+        pdf_bytes = make_pdf_bytes(num_pages=3)
+        uploaded = SimpleUploadedFile("sample_thesis.pdf", pdf_bytes, content_type="application/pdf")
+
+        self.order_a1 = PrintingOrder.objects.create(
+            customer=self.customer1,
+            shop=self.shop_a,
+            total_amount=Decimal('30.00'),
+            status=PrintingOrder.STATUS_SUBMITTED
+        )
+        self.doc_a1 = OrderDocument.objects.create(
+            order=self.order_a1,
+            file=uploaded,
+            original_filename="sample_thesis.pdf",
+            file_size=len(pdf_bytes),
+            page_count=3,
+            effective_pages=3,
+            unit_price=Decimal('10.00'),
+            calculated_total=Decimal('30.00')
+        )
+
+    def test_shop_owner_can_view_and_download_document(self):
+        self.client.force_authenticate(user=self.shop_owner_a)
+        res = self.client.get(f"/api/v1/orders/{self.order_a1.id}/documents/{self.doc_a1.id}/download/?disposition=attachment")
+        self.assertEqual(res.status_code, 200)
+        self.assertIn("attachment", res['Content-Disposition'])
+        self.assertIn("sample_thesis.pdf", res['Content-Disposition'])
+
+    def test_customer_can_view_and_download_own_document(self):
+        self.client.force_authenticate(user=self.customer1)
+        res = self.client.get(f"/api/v1/orders/{self.order_a1.id}/documents/{self.doc_a1.id}/download/?disposition=inline")
+        self.assertEqual(res.status_code, 200)
+        self.assertIn("inline", res['Content-Disposition'])
+
+    def test_other_shop_owner_cannot_access_foreign_document(self):
+        self.client.force_authenticate(user=self.shop_owner_b)
+        res = self.client.get(f"/api/v1/orders/{self.order_a1.id}/documents/{self.doc_a1.id}/download/")
+        self.assertEqual(res.status_code, 403)
+
+    def test_other_customer_cannot_access_foreign_document(self):
+        self.client.force_authenticate(user=self.customer2)
+        res = self.client.get(f"/api/v1/orders/{self.order_a1.id}/documents/{self.doc_a1.id}/download/")
+        self.assertEqual(res.status_code, 403)
+
+    def test_unauthenticated_without_token_rejected(self):
+        res = self.client.get(f"/api/v1/orders/{self.order_a1.id}/documents/{self.doc_a1.id}/download/")
+        self.assertEqual(res.status_code, 401)
+
+    def test_token_query_parameter_allows_authenticated_preview(self):
+        from rest_framework_simplejwt.tokens import RefreshToken
+        token = str(RefreshToken.for_user(self.shop_owner_a).access_token)
+        res = self.client.get(f"/api/v1/orders/{self.order_a1.id}/documents/{self.doc_a1.id}/download/?token={token}")
+        self.assertEqual(res.status_code, 200)
+
+    def test_two_shops_maintain_independent_queues(self):
+        from apps.orders.models import ShopQueueEntry, get_order_queue_details
+
+        entry_a1 = ShopQueueEntry.assign_for_order(self.order_a1)
+        self.assertEqual(entry_a1.queue_number, 1)
+
+        # Create order for shop B
+        order_b1 = PrintingOrder.objects.create(
+            customer=self.customer2,
+            shop=self.shop_b,
+            total_amount=Decimal('20.00'),
+            status=PrintingOrder.STATUS_SUBMITTED
+        )
+        entry_b1 = ShopQueueEntry.assign_for_order(order_b1)
+        # Shop B's queue must start at 1 independently!
+        self.assertEqual(entry_b1.queue_number, 1)
+
+        det_a = get_order_queue_details(self.order_a1)
+        det_b = get_order_queue_details(order_b1)
+
+        self.assertEqual(det_a['position'], 1)
+        self.assertEqual(det_a['orders_ahead'], 0)
+        self.assertEqual(det_b['position'], 1)
+        self.assertEqual(det_b['orders_ahead'], 0)
+
+    def test_duplicate_request_does_not_create_duplicate_queue_entries(self):
+        from apps.orders.models import ShopQueueEntry
+        entry1 = ShopQueueEntry.assign_for_order(self.order_a1)
+        entry2 = ShopQueueEntry.assign_for_order(self.order_a1)
+        self.assertEqual(entry1.id, entry2.id)
+        self.assertEqual(ShopQueueEntry.objects.filter(order=self.order_a1).count(), 1)
+
+    def test_completing_and_cancelling_earlier_order_updates_queue_positions(self):
+        from apps.orders.models import ShopQueueEntry, get_order_queue_details
+
+        ShopQueueEntry.assign_for_order(self.order_a1)
+
+        # Second order in shop A
+        order_a2 = PrintingOrder.objects.create(
+            customer=self.customer2,
+            shop=self.shop_a,
+            total_amount=Decimal('40.00'),
+            status=PrintingOrder.STATUS_SUBMITTED
+        )
+        entry_a2 = ShopQueueEntry.assign_for_order(order_a2)
+        self.assertEqual(entry_a2.queue_number, 2)
+
+        # Third order in shop A
+        order_a3 = PrintingOrder.objects.create(
+            customer=self.customer1,
+            shop=self.shop_a,
+            total_amount=Decimal('15.00'),
+            status=PrintingOrder.STATUS_SUBMITTED
+        )
+        entry_a3 = ShopQueueEntry.assign_for_order(order_a3)
+        self.assertEqual(entry_a3.queue_number, 3)
+
+        # Check initial positions
+        self.assertEqual(get_order_queue_details(self.order_a1)['position'], 1)
+        self.assertEqual(get_order_queue_details(order_a2)['position'], 2)
+        self.assertEqual(get_order_queue_details(order_a2)['orders_ahead'], 1)
+        self.assertEqual(get_order_queue_details(order_a3)['position'], 3)
+        self.assertEqual(get_order_queue_details(order_a3)['orders_ahead'], 2)
+
+        # Complete order 1
+        self.order_a1.status = PrintingOrder.STATUS_COMPLETED
+        self.order_a1.save()
+
+        # Order 2 must move to position 1 (0 ahead)
+        det_a2_after = get_order_queue_details(order_a2)
+        self.assertEqual(det_a2_after['position'], 1)
+        self.assertEqual(det_a2_after['orders_ahead'], 0)
+        self.assertEqual(det_a2_after['queue_number'], 2)  # Permanent ticket remains #2
+
+        # Order 3 must move to position 2 (1 ahead)
+        det_a3_after = get_order_queue_details(order_a3)
+        self.assertEqual(det_a3_after['position'], 2)
+        self.assertEqual(det_a3_after['orders_ahead'], 1)
+
+        # Cancel order 2
+        order_a2.status = PrintingOrder.STATUS_CANCELLED
+        order_a2.save()
+
+        # Order 3 must move to position 1 (0 ahead)
+        det_a3_after_cancel = get_order_queue_details(order_a3)
+        self.assertEqual(det_a3_after_cancel['position'], 1)
+        self.assertEqual(det_a3_after_cancel['orders_ahead'], 0)
+
+        # Order 2 exited queue but preserves its history
+        det_a2_cancelled = get_order_queue_details(order_a2)
+        self.assertFalse(det_a2_cancelled['is_active'])
+        self.assertIsNone(det_a2_cancelled['position'])
+        self.assertEqual(det_a2_cancelled['queue_number'], 2)
+
+    def test_queue_status_endpoint(self):
+        self.client.force_authenticate(user=self.customer1)
+        res = self.client.get(f"/api/v1/orders/{self.order_a1.id}/queue-status/")
+        self.assertEqual(res.status_code, 200)
+        self.assertEqual(res.data['queue_number'], 1)
+        self.assertEqual(res.data['position'], 1)
+        self.assertIn("queue_number_display", res.data)
+        self.assertIn("orders_ahead", res.data)
+        self.assertIn("estimated_wait_display", res.data)
+
+    def test_shop_orders_list_includes_documents_and_queue(self):
+        self.client.force_authenticate(user=self.shop_owner_a)
+        res = self.client.get('/api/v1/orders/?view=shop')
+        self.assertEqual(res.status_code, 200)
+        data = res.data if isinstance(res.data, list) else res.data.get('results', [])
+        self.assertTrue(len(data) > 0)
+        first = data[0]
+        self.assertIn('documents', first)
+        self.assertIn('queue_info', first)
+        self.assertEqual(first['documents'][0]['original_filename'], 'sample_thesis.pdf')
+        self.assertEqual(first['queue_info']['queue_number'], 1)
+
+

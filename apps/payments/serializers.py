@@ -37,18 +37,25 @@ class RefundRequestSerializer(serializers.ModelSerializer):
     status_display = serializers.CharField(source='get_status_display', read_only=True)
     audit_logs = RefundAuditLogSerializer(many=True, read_only=True)
 
+    # Aliases to ensure consistency across frontend components
+    requested_amount = serializers.DecimalField(source='amount_requested', max_digits=10, decimal_places=2, read_only=True)
+    approved_amount = serializers.DecimalField(source='amount_approved', max_digits=10, decimal_places=2, read_only=True)
+    order_total = serializers.DecimalField(source='order.total_amount', max_digits=10, decimal_places=2, read_only=True)
+
     class Meta:
         model = RefundRequest
         fields = [
             'id', 'refund_reference', 'order', 'order_number', 'shop_id', 'shop_name',
             'customer', 'customer_name', 'payment', 'amount_requested', 'amount_approved',
+            'requested_amount', 'approved_amount', 'order_total',
             'reason', 'reason_display', 'explanation', 'status', 'status_display',
             'decision_reason', 'decided_by', 'decided_by_name', 'decided_at',
             'simulated_mode', 'audit_logs', 'created_at', 'updated_at'
         ]
         read_only_fields = [
             'id', 'refund_reference', 'order', 'customer', 'payment',
-            'amount_approved', 'status', 'decision_reason', 'decided_by',
+            'amount_approved', 'requested_amount', 'approved_amount', 'order_total',
+            'status', 'decision_reason', 'decided_by',
             'decided_at', 'simulated_mode', 'created_at', 'updated_at'
         ]
 
@@ -59,9 +66,13 @@ class CreateRefundRequestSerializer(serializers.Serializer):
     explanation = serializers.CharField(required=False, allow_blank=True, default='')
     customer_explanation = serializers.CharField(required=False, allow_blank=True, default='')
     amount_requested = serializers.DecimalField(max_digits=10, decimal_places=2, required=False)
+    requested_amount = serializers.DecimalField(max_digits=10, decimal_places=2, required=False)
 
     def validate(self, attrs):
         if not attrs.get('explanation') and attrs.get('customer_explanation'):
             attrs['explanation'] = attrs['customer_explanation']
+        if attrs.get('amount_requested') is None and attrs.get('requested_amount') is not None:
+            attrs['amount_requested'] = attrs['requested_amount']
         return attrs
+
 

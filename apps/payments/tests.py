@@ -65,6 +65,9 @@ class PaymentAndRefundWorkflowTests(TestCase):
         self.assertEqual(req_res.status_code, 201)
         refund_id = req_res.data['refund']['id']
         self.assertEqual(req_res.data['refund']['status'], 'pending')
+        # Check both amount_requested and requested_amount aliases are returned
+        self.assertEqual(Decimal(str(req_res.data['refund']['amount_requested'])), Decimal('150.00'))
+        self.assertEqual(Decimal(str(req_res.data['refund']['requested_amount'])), Decimal('150.00'))
 
         # 4. Duplicate request rejected
         dup_res = self.client.post('/api/v1/payments/refunds/request/', {
@@ -76,12 +79,31 @@ class PaymentAndRefundWorkflowTests(TestCase):
 
         # 5. Shop owner reviews and approves the refund
         self.client.force_authenticate(user=self.owner)
+
+        # 5a. Validation: Reject invalid / negative amount
+        invalid_res = self.client.post(f'/api/v1/payments/refunds/{refund_id}/action/', {
+            'action': 'approve',
+            'amount_approved': '-10.00'
+        })
+        self.assertEqual(invalid_res.status_code, 400)
+
+        # 5b. Validation: Reject amount exceeding eligible balance
+        excess_res = self.client.post(f'/api/v1/payments/refunds/{refund_id}/action/', {
+            'action': 'approve',
+            'amount_approved': '500.00'
+        })
+        self.assertEqual(excess_res.status_code, 400)
+
+        # 5c. Valid approval auto-fills and settles
         approve_res = self.client.post(f'/api/v1/payments/refunds/{refund_id}/action/', {
             'action': 'approve',
+            'amount_approved': '150.00',
             'decision_reason': 'Verified inventory shortage. Full refund approved.'
         })
         self.assertEqual(approve_res.status_code, 200)
         self.assertEqual(approve_res.data['refund']['status'], 'completed')
+        self.assertEqual(Decimal(str(approve_res.data['refund']['amount_approved'])), Decimal('150.00'))
+        self.assertEqual(Decimal(str(approve_res.data['refund']['approved_amount'])), Decimal('150.00'))
 
         # 6. Check order status updated to refunded
         self.order.refresh_from_db()
@@ -90,3 +112,4 @@ class PaymentAndRefundWorkflowTests(TestCase):
         # 7. Audit log verified
         refund = RefundRequest.objects.get(pk=refund_id)
         self.assertTrue(refund.audit_logs.filter(action='approved_and_completed').exists())
+

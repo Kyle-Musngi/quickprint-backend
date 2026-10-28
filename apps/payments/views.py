@@ -506,16 +506,24 @@ class ProcessRefundActionView(APIView):
                 available_to_refund = remaining + refund.amount_requested
                 
                 approved_amt_raw = request.data.get('amount_approved')
-                if approved_amt_raw:
+                if approved_amt_raw is None or str(approved_amt_raw).strip() == '':
+                    approved_amt_raw = request.data.get('amount')
+
+                if approved_amt_raw is not None and str(approved_amt_raw).strip() != '':
                     try:
                         approved_amount = Decimal(str(approved_amt_raw))
                     except Exception:
-                        approved_amount = refund.amount_requested
+                        return Response({"error": "Invalid approved refund amount format."}, status=status.HTTP_400_BAD_REQUEST)
                 else:
                     approved_amount = refund.amount_requested
 
-                if approved_amount <= 0 or approved_amount > available_to_refund:
-                    approved_amount = min(refund.amount_requested, available_to_refund)
+                if approved_amount <= Decimal('0.00'):
+                    return Response({"error": "Approved refund amount must be greater than ₱0.00."}, status=status.HTTP_400_BAD_REQUEST)
+
+                if approved_amount > available_to_refund:
+                    return Response({
+                        "error": f"Approved refund amount (₱{approved_amount:.2f}) cannot exceed the remaining eligible balance (₱{available_to_refund:.2f})."
+                    }, status=status.HTTP_400_BAD_REQUEST)
 
                 # Simulated mode: set directly to completed with clear simulation tag
                 refund.amount_approved = approved_amount

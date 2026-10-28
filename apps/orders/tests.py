@@ -702,4 +702,26 @@ class ShopDocumentAccessAndQueueSystemTests(TestCase):
         self.assertEqual(first['documents'][0]['original_filename'], 'sample_thesis.pdf')
         self.assertEqual(first['queue_info']['queue_number'], 1)
 
+    def test_order_list_includes_refund_status_and_active_flag(self):
+        from apps.payments.models import RefundRequest
+        refund = RefundRequest.objects.create(
+            order=self.order_a1,
+            customer=self.customer1,
+            amount_requested=Decimal('50.00'),
+            reason='shop_delay',
+            status=RefundRequest.STATUS_PENDING
+        )
+
+        self.client.force_authenticate(user=self.customer1)
+        res = self.client.get('/api/v1/orders/')
+        self.assertEqual(res.status_code, 200)
+        data = res.data if isinstance(res.data, list) else res.data.get('results', [])
+        order_match = next((o for o in data if o['id'] == self.order_a1.id), None)
+        self.assertIsNotNone(order_match)
+        self.assertEqual(order_match['refund_status'], 'pending')
+        self.assertEqual(order_match['refund_status_display'], 'Requesting Refund')
+        self.assertTrue(order_match['has_active_refund'])
+        self.assertIsNotNone(order_match['refund_request'])
+        self.assertEqual(order_match['refund_request']['status'], 'pending')
+
 

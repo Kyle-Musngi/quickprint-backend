@@ -48,6 +48,18 @@ class OrderStatusHistorySerializer(serializers.ModelSerializer):
         fields = ['id', 'status', 'changed_by_name', 'notes', 'created_at']
 
 
+def _extract_latest_refund(obj):
+    if not hasattr(obj, '_cached_latest_refund'):
+        if hasattr(obj, '_prefetched_objects_cache') and 'refund_requests' in obj._prefetched_objects_cache:
+            refunds = list(obj.refund_requests.all())
+            obj._cached_latest_refund = refunds[0] if refunds else None
+        elif hasattr(obj, 'refund_requests'):
+            obj._cached_latest_refund = obj.refund_requests.order_by('-created_at').first()
+        else:
+            obj._cached_latest_refund = None
+    return obj._cached_latest_refund
+
+
 class PrintingOrderDetailSerializer(serializers.ModelSerializer):
     documents = OrderDocumentSerializer(many=True, read_only=True)
     status_history = OrderStatusHistorySerializer(many=True, read_only=True)
@@ -56,6 +68,10 @@ class PrintingOrderDetailSerializer(serializers.ModelSerializer):
     is_reviewed = serializers.SerializerMethodField()
     review = serializers.SerializerMethodField()
     queue_info = serializers.SerializerMethodField()
+    refund_status = serializers.SerializerMethodField()
+    refund_status_display = serializers.SerializerMethodField()
+    has_active_refund = serializers.SerializerMethodField()
+    refund_request = serializers.SerializerMethodField()
 
     class Meta:
         model = PrintingOrder
@@ -67,6 +83,7 @@ class PrintingOrderDetailSerializer(serializers.ModelSerializer):
             'instructions', 'pickup_date', 'pickup_time_slot',
             'pickup_code', 'pickup_confirmed_at',
             'documents', 'status_history', 'queue_info', 'is_reviewed', 'review',
+            'refund_status', 'refund_status_display', 'has_active_refund', 'refund_request',
             'created_at', 'updated_at'
         ]
 
@@ -88,6 +105,42 @@ class PrintingOrderDetailSerializer(serializers.ModelSerializer):
         from .models import get_order_queue_details
         return get_order_queue_details(obj)
 
+    def get_refund_status(self, obj):
+        ref = _extract_latest_refund(obj)
+        return ref.status if ref else None
+
+    def get_refund_status_display(self, obj):
+        ref = _extract_latest_refund(obj)
+        if not ref:
+            return None
+        if ref.status in ['pending', 'under_review']:
+            return 'Requesting Refund'
+        return ref.get_status_display()
+
+    def get_has_active_refund(self, obj):
+        ref = _extract_latest_refund(obj)
+        if not ref:
+            return False
+        return ref.status in ['pending', 'under_review', 'processing']
+
+    def get_refund_request(self, obj):
+        ref = _extract_latest_refund(obj)
+        if not ref:
+            return None
+        return {
+            'id': ref.id,
+            'refund_reference': ref.refund_reference,
+            'status': ref.status,
+            'status_display': 'Requesting Refund' if ref.status in ['pending', 'under_review'] else ref.get_status_display(),
+            'amount_requested': str(ref.amount_requested),
+            'amount_approved': str(ref.amount_approved),
+            'reason': ref.reason,
+            'reason_display': ref.get_reason_display() if hasattr(ref, 'get_reason_display') else ref.reason,
+            'explanation': ref.explanation,
+            'decision_reason': ref.decision_reason,
+            'created_at': ref.created_at.isoformat() if ref.created_at else None,
+        }
+
 
 class PrintingOrderListSerializer(serializers.ModelSerializer):
     shop_name = serializers.ReadOnlyField(source='shop.name')
@@ -96,6 +149,10 @@ class PrintingOrderListSerializer(serializers.ModelSerializer):
     documents = OrderDocumentSerializer(many=True, read_only=True)
     is_reviewed = serializers.SerializerMethodField()
     queue_info = serializers.SerializerMethodField()
+    refund_status = serializers.SerializerMethodField()
+    refund_status_display = serializers.SerializerMethodField()
+    has_active_refund = serializers.SerializerMethodField()
+    refund_request = serializers.SerializerMethodField()
 
     class Meta:
         model = PrintingOrder
@@ -103,7 +160,9 @@ class PrintingOrderListSerializer(serializers.ModelSerializer):
             'id', 'order_number', 'shop_name', 'customer_name', 'status',
             'payment_status', 'payment_deadline', 'total_amount', 'pickup_date',
             'pickup_time_slot', 'pickup_code', 'document_count', 'documents',
-            'queue_info', 'is_reviewed', 'created_at'
+            'queue_info', 'is_reviewed',
+            'refund_status', 'refund_status_display', 'has_active_refund', 'refund_request',
+            'created_at'
         ]
 
     def get_is_reviewed(self, obj):
@@ -112,5 +171,41 @@ class PrintingOrderListSerializer(serializers.ModelSerializer):
     def get_queue_info(self, obj):
         from .models import get_order_queue_details
         return get_order_queue_details(obj)
+
+    def get_refund_status(self, obj):
+        ref = _extract_latest_refund(obj)
+        return ref.status if ref else None
+
+    def get_refund_status_display(self, obj):
+        ref = _extract_latest_refund(obj)
+        if not ref:
+            return None
+        if ref.status in ['pending', 'under_review']:
+            return 'Requesting Refund'
+        return ref.get_status_display()
+
+    def get_has_active_refund(self, obj):
+        ref = _extract_latest_refund(obj)
+        if not ref:
+            return False
+        return ref.status in ['pending', 'under_review', 'processing']
+
+    def get_refund_request(self, obj):
+        ref = _extract_latest_refund(obj)
+        if not ref:
+            return None
+        return {
+            'id': ref.id,
+            'refund_reference': ref.refund_reference,
+            'status': ref.status,
+            'status_display': 'Requesting Refund' if ref.status in ['pending', 'under_review'] else ref.get_status_display(),
+            'amount_requested': str(ref.amount_requested),
+            'amount_approved': str(ref.amount_approved),
+            'reason': ref.reason,
+            'reason_display': ref.get_reason_display() if hasattr(ref, 'get_reason_display') else ref.reason,
+            'explanation': ref.explanation,
+            'decision_reason': ref.decision_reason,
+            'created_at': ref.created_at.isoformat() if ref.created_at else None,
+        }
 
 

@@ -316,7 +316,7 @@ class OrderListView(generics.ListAPIView):
         if status_filter:
             qs = qs.filter(status=status_filter)
 
-        return qs.order_by('-created_at')
+        return qs.prefetch_related('refund_requests', 'documents').order_by('-created_at')
 
 
 class OrderDetailView(generics.RetrieveAPIView):

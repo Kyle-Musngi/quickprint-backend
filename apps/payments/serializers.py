@@ -57,5 +57,11 @@ class CreateRefundRequestSerializer(serializers.Serializer):
     order_id = serializers.IntegerField()
     reason = serializers.ChoiceField(choices=RefundRequest.REASON_CHOICES)
     explanation = serializers.CharField(required=False, allow_blank=True, default='')
+    customer_explanation = serializers.CharField(required=False, allow_blank=True, default='')
     amount_requested = serializers.DecimalField(max_digits=10, decimal_places=2, required=False)
+
+    def validate(self, attrs):
+        if not attrs.get('explanation') and attrs.get('customer_explanation'):
+            attrs['explanation'] = attrs['customer_explanation']
+        return attrs
 

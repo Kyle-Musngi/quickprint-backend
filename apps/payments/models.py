@@ -1,5 +1,6 @@
 from django.db import models
 from django.conf import settings
+from django.utils import timezone
 # pyrefly: ignore[missing-import]
 from apps.orders.models import PrintingOrder
 import uuid
@@ -52,22 +53,30 @@ class PaymentTransaction(models.Model):
 
 
 class RefundRequest(models.Model):
+    REASON_WRONG_ITEM = 'wrong_item'
+    REASON_DEFECTIVE_PRINT = 'defective_print'
+    REASON_ORDER_NOT_RECEIVED = 'order_not_received'
+    REASON_ORDER_CANCELLED = 'order_cancelled'
+    REASON_DUPLICATE_PAYMENT = 'duplicate_payment'
     REASON_SHOP_REJECTED = 'shop_rejected'
     REASON_SHOP_CANNOT_FULFILL = 'shop_cannot_fulfill'
     REASON_CUSTOMER_CANCELLED = 'customer_cancelled'
-    REASON_DUPLICATE_PAYMENT = 'duplicate_payment'
     REASON_DEFECTIVE_PRINTING = 'defective_printing'
     REASON_PAYMENT_UNCONFIRMED = 'payment_unconfirmed'
     REASON_OTHER = 'other'
 
     REASON_CHOICES = (
+        (REASON_WRONG_ITEM, 'Wrong Item or Printing Result'),
+        (REASON_DEFECTIVE_PRINT, 'Damaged or Defective Print'),
+        (REASON_ORDER_NOT_RECEIVED, 'Order Not Received'),
+        (REASON_ORDER_CANCELLED, 'Order Cancelled'),
+        (REASON_DUPLICATE_PAYMENT, 'Payment Issue or Duplicate Payment'),
         (REASON_SHOP_REJECTED, 'Shop Rejected Paid Order'),
         (REASON_SHOP_CANNOT_FULFILL, 'Shop Cannot Complete Order'),
         (REASON_CUSTOMER_CANCELLED, 'Cancelled Before Printing Started'),
-        (REASON_DUPLICATE_PAYMENT, 'Duplicate Payment Detected'),
         (REASON_DEFECTIVE_PRINTING, 'Incorrect or Defective Printing Quality'),
         (REASON_PAYMENT_UNCONFIRMED, 'Payment Deducted But Order Unconfirmed'),
-        (REASON_OTHER, 'Other / Special Request'),
+        (REASON_OTHER, 'Other'),
     )
 
     STATUS_PENDING = 'pending'
@@ -118,7 +127,15 @@ class RefundRequest(models.Model):
 
     def save(self, *args, **kwargs):
         if not self.refund_reference:
-            self.refund_reference = f"REF-{uuid.uuid4().hex[:10].upper()}"
+            today_str = timezone.now().strftime('%Y%m%d')
+            today_count = RefundRequest.objects.filter(
+                created_at__date=timezone.now().date()
+            ).count() + 1
+            ref = f"UQP-REF-{today_str}-{today_count:04d}"
+            while RefundRequest.objects.filter(refund_reference=ref).exists():
+                today_count += 1
+                ref = f"UQP-REF-{today_str}-{today_count:04d}"
+            self.refund_reference = ref
         super().save(*args, **kwargs)
 
 

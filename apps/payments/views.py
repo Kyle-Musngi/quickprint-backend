@@ -253,18 +253,24 @@ class RefundEligibilityView(APIView):
         elif order.status == PrintingOrder.STATUS_CANCELLED:
             suggested_reason = RefundRequest.REASON_CUSTOMER_CANCELLED
 
+        existing_refunds_qs = RefundRequest.objects.filter(order=order).order_by('-created_at')
+        existing_refunds_data = RefundRequestSerializer(existing_refunds_qs, many=True).data
+
         return Response({
             "order_id": order.id,
             "order_number": order.order_number,
             "order_status": order.status,
             "payment_status": order.payment_status,
             "is_eligible": is_eligible,
+            "eligible": is_eligible,
             "ineligibility_reason": ineligibility_reason,
             "has_pending_request": has_pending,
             "total_paid": float(total_paid),
             "refunded_total": float(refunded_sum),
             "remaining_refundable": float(remaining),
+            "remaining_refundable_balance": float(remaining),
             "suggested_reason": suggested_reason,
+            "existing_refunds": existing_refunds_data,
             "available_reasons": [
                 {"code": code, "label": label} for code, label in RefundRequest.REASON_CHOICES
             ]
